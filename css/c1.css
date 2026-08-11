@@ -1,0 +1,49 @@
+.skill-orbit{height:560px;max-width:700px;margin:auto;position:relative;border:1px solid var(--line);border-radius:50%;background:radial-gradient(circle,#0a2035 0,#030914 55%,transparent 70%);animation:spin 35s linear infinite}.skill-center{position:absolute;inset:0;margin:auto;width:160px;height:160px;border-radius:50%;display:grid;place-content:center;text-align:center;background:#071626;border:1px solid var(--cyan);box-shadow:0 0 50px rgba(102,232,255,.2);font:700 15px/1.4 'Orbitron';animation:counter 35s linear infinite}.skill-center em{font-size:12px}.skill-orbit>span{position:absolute;padding:10px 15px;background:#081728;border:1px solid var(--line);border-radius:30px;color:#b8cce0;font:600 10px 'Orbitron';letter-spacing:1px;animation:counter 35s linear infinite}.skill-orbit span:nth-child(2){top:5%;left:43%}.skill-orbit span:nth-child(3){top:18%;right:8%}.skill-orbit span:nth-child(4){bottom:18%;right:8%}.skill-orbit span:nth-child(5){bottom:5%;left:44%}.skill-orbit span:nth-child(6){bottom:18%;left:8%}.skill-orbit span:nth-child(7){top:18%;left:8%}.skill-orbit span:nth-child(8){top:47%;right:-4%}.skill-orbit span:nth-child(9){top:47%;left:-4%}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start}.muted{color:var(--muted);font-size:17px}.contact-links{display:grid;gap:15px;margin-top:35px}.contact-links a{color:var(--cyan);font:500 12px 'Orbitron'}.contact form{padding:30px;display:grid;gap:14px}input,textarea{background:rgba(2,8,18,.7);border:1px solid var(--line);border-radius:5px;padding:15px;color:white;font:500 12px 'Orbitron';outline:0}input:focus,textarea:focus{border-color:var(--cyan)}textarea{min-height:150px;resize:vertical}
+footer{height:60px;padding:20px 5vw;text-align:center;color:#52677d;font:600 9px 'Orbitron';letter-spacing:2px;border-top:1px solid rgba(120,190,255,.08)}footer span{color:var(--cyan)}
+.reveal{animation:enter .8s ease both}@keyframes enter{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}@keyframes float{50%{transform:translateY(-18px) rotate(3deg)}}@keyframes blink{50%{opacity:.15;transform:scale(.5)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes counter{to{transform:rotate(-360deg)}}
+@media(max-width:850px){header{height:72px}.hamb{display:block}nav{display:none;position:absolute;top:72px;left:0;right:0;padding:25px;flex-direction:column;background:rgba(2,7,15,.95);backdrop-filter:blur(20px)}nav.open{display:flex}.hero{grid-template-columns:1fr;padding-top:55px}.orb-wrap{height:330px}.orb{width:210px;height:210px}.project-grid,.split,.contact{grid-template-columns:1fr}.page{padding-top:55px}.skill-orbit{height:430px}.skill-orbit span:nth-child(7){left:2%}.skill-orbit span:nth-child(8){right:-2%}.skill-orbit span:nth-child(9){left:-2%}}
+@media(max-width:500px){.hero h1{font-size:43px}.page-title{font-size:42px}.subtitle{font-size:15px}.orb-wrap{display:none}.ticker{gap:30px;justify-content:flex-start;white-space:nowrap}.ticker span:nth-of-type(n+4),.ticker b:nth-of-type(n+4){display:none}}
+
+/* ===== DEEP SPACE / 3D MOTION UPGRADE ===== */
+body:before{content:"";position:fixed;inset:-30%;z-index:-4;pointer-events:none;
+background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(72,211,255,.035) 35deg,transparent 80deg,rgba(155,124,255,.035) 150deg,transparent 210deg,rgba(72,211,255,.035) 300deg,transparent 360deg);
+animation:spaceRotate 45s linear infinite}
+body:after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+background-image:linear-gradient(rgba(100,190,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(100,190,255,.018) 1px,transparent 1px);
+background-size:70px 70px;mask-image:radial-gradient(circle,black,transparent 75%)}
+header{background:linear-gradient(180deg,rgba(2,7,15,.88),rgba(2,7,15,.28));box-shadow:0 10px 40px rgba(0,0,0,.18)}
+.brand{transition:.35s;text-shadow:0 0 18px rgba(102,232,255,.1)}
+.brand:hover{letter-spacing:4px;text-shadow:0 0 25px rgba(102,232,255,.55)}
+.hero-copy,.page>.kicker,.page-title{position:relative}
+.hero-copy:after{content:"";position:absolute;width:240px;height:240px;left:-100px;top:-80px;border-radius:50%;background:rgba(70,200,255,.08);filter:blur(70px);z-index:-1;animation:pulseGlow 4s ease-in-out infinite}
+.hero h1{animation:titleIn 1.1s cubic-bezier(.2,.8,.2,1) both}
+.hero h1 em{animation:neonFlicker 5s infinite}
+.hero .subtitle{animation:fadeUp .9s .35s both}
+.actions{animation:fadeUp .9s .5s both}
+.orb-wrap{perspective:1000px;transform-style:preserve-3d}
+.orb{transform-style:preserve-3d;animation:planetFloat 6s ease-in-out infinite,planetSpin 18s linear infinite}
+.orb:before{box-shadow:0 0 25px rgba(102,232,255,.25)}
+.orb:after{box-shadow:0 0 35px rgba(155,124,255,.2)}
+.orb-core{animation:corePulse 3s ease-in-out infinite}
+.orb-wrap:before,.orb-wrap:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.orb-wrap:before{width:430px;height:430px;border:1px solid rgba(102,232,255,.08);animation:ringSpin 14s linear infinite}
+.orb-wrap:after{width:520px;height:150px;border:1px solid rgba(155,124,255,.1);transform:rotate(-25deg);animation:ringTilt 20s linear infinite}
+.cards article,.project,.glass{transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .45s,box-shadow .45s}
+.cards article:hover,.glass:hover{transform:translateY(-8px) perspective(900px) rotateX(2deg);border-color:rgba(102,232,255,.38);box-shadow:0 25px 80px rgba(0,120,255,.13),inset 0 0 40px rgba(102,232,255,.025)}
+.project:hover{transform:translateY(-12px) perspective(900px) rotateX(3deg) rotateY(-2deg)}
+.project:before{content:"";display:block;position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);transform:translateX(-120%);transition:transform .8s}
+.project{position:relative;overflow:hidden}
+.project:hover:before{transform:translateX(120%)}
+.skill-orbit{box-shadow:0 0 100px rgba(50,150,255,.07),inset 0 0 90px rgba(70,150,255,.04)}
+footer{background:linear-gradient(0deg,rgba(2,5,12,.7),transparent)}
+@keyframes spaceRotate{to{transform:rotate(360deg)}}
+@keyframes pulseGlow{50%{transform:scale(1.25);opacity:.55}}
+@keyframes titleIn{from{opacity:0;transform:translateY(35px) skewY(3deg);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes neonFlicker{0%,93%,100%{text-shadow:0 0 25px rgba(102,232,255,.22)}95%{text-shadow:0 0 4px rgba(102,232,255,.1)}97%{text-shadow:0 0 55px rgba(102,232,255,.65)}}
+@keyframes planetFloat{50%{transform:translate3d(0,-20px,30px) rotateX(4deg) rotateY(7deg)}}
+@keyframes planetSpin{to{filter:hue-rotate(8deg)}}
+@keyframes corePulse{50%{transform:scale(1.08);text-shadow:0 0 45px var(--cyan)}}
+@keyframes ringSpin{to{transform:rotate(385deg) scaleY(.38)}}
+@keyframes ringTilt{to{transform:rotate(335deg) scaleY(.28)}}
