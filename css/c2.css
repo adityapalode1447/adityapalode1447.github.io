@@ -1,0 +1,36 @@
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+
+/* ===== SYSTEMATIC SKILLS PAGE ===== */
+.skills-page{max-width:1250px;margin:auto;padding:80px 5vw 110px;min-height:calc(100vh - 130px)}
+.skills-head{max-width:900px;margin-bottom:55px}.skills-intro{max-width:650px;color:var(--muted);font-size:17px;line-height:1.75;margin-top:-30px}
+.education-card{position:relative;display:grid;grid-template-columns:70px 1fr 170px;gap:25px;align-items:center;padding:35px 38px;overflow:hidden;margin-bottom:85px}
+.education-card:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,rgba(102,232,255,.07),transparent 45%,rgba(155,124,255,.05));pointer-events:none}
+.section-number{font:700 11px 'Orbitron';color:var(--cyan);align-self:start;padding-top:6px}
+.edu-label{font:700 10px 'Orbitron';letter-spacing:3px;color:var(--cyan);margin-bottom:12px}
+.edu-content h2{font:800 31px 'Orbitron';margin-bottom:6px}.edu-content h3{font:600 16px 'Space Grotesk';color:#cbd9e8}.edu-content h3 span{color:var(--cyan)}.university{color:var(--muted);margin-top:8px}
+.edu-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:25px}.edu-meta div{padding:13px;border:1px solid var(--line);border-radius:7px;background:rgba(2,9,18,.35)}.edu-meta small{display:block;color:#688098;font:600 8px 'Orbitron';letter-spacing:1.5px;margin-bottom:6px}.edu-meta strong{font:600 11px 'Space Grotesk';color:#dbe9f5}
+.edu-orb{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#83efff,#174c70 28%,#061322 68%);box-shadow:0 0 55px rgba(102,232,255,.22),inset -20px -20px 40px #000;animation:skillPlanet 6s ease-in-out infinite}.edu-orb div{font:800 32px 'Orbitron';text-shadow:0 0 25px var(--cyan)}
+.section-title-row{display:flex;justify-content:space-between;align-items:end;margin-bottom:28px}.section-title-row h2{font:800 clamp(30px,4vw,48px) 'Orbitron';line-height:1}.count{font:700 9px 'Orbitron';letter-spacing:2px;color:var(--muted);border:1px solid var(--line);padding:10px 13px;border-radius:20px}
+.learning-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-bottom:90px}.learn-card{position:relative;min-height:190px;padding:22px;overflow:hidden;transition:.4s}.learn-card:before{content:"";position:absolute;width:90px;height:90px;right:-35px;top:-35px;border-radius:50%;background:rgba(102,232,255,.08);filter:blur(4px)}.learn-card:hover{transform:translateY(-8px) rotateX(3deg);border-color:rgba(102,232,255,.42);box-shadow:0 18px 55px rgba(30,160,255,.12)}
+.learn-no{font:600 8px 'Orbitron';color:#526b83}.learn-icon{margin:25px 0 16px;width:40px;height:40px;border-radius:9px;display:grid;place-items:center;background:#081a2c;border:1px solid rgba(102,232,255,.25);color:var(--cyan);font:800 11px 'Orbitron';box-shadow:0 0 18px rgba(102,232,255,.08)}.learn-card h3{font:700 15px 'Space Grotesk';line-height:1.25}.learn-card p{color:#71889d;font-size:11px;margin-top:6px;line-height:1.4}
+.cert-section{margin-top:10px}.cert-list{display:grid;gap:13px}.cert{display:grid;grid-template-columns:45px 58px 1fr auto;align-items:center;gap:18px;padding:19px 23px;transition:.4s}.cert:hover{transform:translateX(8px);border-color:rgba(102,232,255,.42);box-shadow:0 15px 45px rgba(30,160,255,.1)}.cert-index{font:600 9px 'Orbitron';color:#60778c}.cert-mark{width:48px;height:48px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(145deg,#0c2740,#07111e);border:1px solid rgba(102,232,255,.24);color:var(--cyan);font:800 12px 'Orbitron';box-shadow:0 0 20px rgba(102,232,255,.07)}.cert-info>span{font:600 7px 'Orbitron';letter-spacing:2px;color:#637d92}.cert-info h3{font:700 17px 'Space Grotesk';margin:3px 0}.cert-info p{color:var(--muted);font-size:12px}.cert-info b{color:#cfe6f4}.verified{font:700 8px 'Orbitron';letter-spacing:1.5px;color:var(--cyan);border:1px solid rgba(102,232,255,.22);padding:8px 10px;border-radius:20px;background:rgba(102,232,255,.04)}
+@keyframes skillPlanet{50%{transform:translateY(-9px) rotate(6deg);box-shadow:0 0 75px rgba(102,232,255,.32),inset -20px -20px 40px #000}}
+@media(max-width:1000px){.learning-grid{grid-template-columns:repeat(3,1fr)}.education-card{grid-template-columns:50px 1fr}.edu-orb{display:none}}
+@media(max-width:650px){.skills-page{padding-top:55px}.skills-intro{font-size:15px;margin-top:-20px}.education-card{grid-template-columns:1fr;padding:25px}.section-number{display:none}.edu-meta{grid-template-columns:1fr}.learning-grid{grid-template-columns:repeat(2,1fr)}.section-title-row{align-items:start;gap:15px}.count{white-space:nowrap}.cert{grid-template-columns:30px 48px 1fr}.verified{display:none}.cert-info h3{font-size:14px}}
+@media(max-width:430px){.learning-grid{grid-template-columns:1fr}.section-title-row{display:block}.count{display:inline-block;margin-top:15px}}
+
+/* ===== CERTIFICATE VIEWER ===== */
+.cert-click{cursor:pointer}
+.cert-click .verified{transition:.3s}
+.cert-click:hover .verified{background:rgba(102,232,255,.12);box-shadow:0 0 18px rgba(102,232,255,.12)}
+.certificate-modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:30px;background:rgba(0,2,8,.82);backdrop-filter:blur(18px);opacity:0;transition:opacity .3s}
+.certificate-modal.show{display:flex;opacity:1}
+.certificate-window{position:relative;width:min(1050px,94vw);max-height:92vh;overflow:auto;border:1px solid rgba(102,232,255,.3);border-radius:16px;background:linear-gradient(145deg,rgba(8,20,35,.96),rgba(2,8,16,.98));box-shadow:0 0 100px rgba(40,180,255,.16),0 30px 100px #000;transform:scale(.94) translateY(15px);animation:certPop .35s ease forwards}
+.certificate-close{position:absolute;right:18px;top:15px;z-index:3;width:40px;height:40px;border-radius:50%;border:1px solid rgba(102,232,255,.25);background:rgba(2,8,15,.8);color:white;font-size:28px;line-height:1;cursor:pointer}
+.certificate-close:hover{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 20px rgba(102,232,255,.25)}
+.certificate-top{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:24px 65px 20px 28px;border-bottom:1px solid var(--line)}
+.certificate-top span:first-child{font:600 8px 'Orbitron';letter-spacing:2px;color:var(--cyan)}
+.certificate-top h2{font:700 24px 'Orbitron';margin:6px 0}.certificate-top p{font-size:12px;color:var(--muted)}
+.modal-badge{font:700 8px 'Orbitron';letter-spacing:1.5px;color:var(--cyan);border:1px solid rgba(102,232,255,.25);padding:9px 12px;border-radius:20px}
+.certificate-image-wrap{padding:22px;display:flex;justify-content:center;background:radial-gradient(circle at center,rgba(40,120,180,.08),transparent 65%)}
+.certificate-image-wrap img{display:block;max-width:100%;max-height:70vh;object-fit:contain;border-radius:5px;box-shadow:0 15px 50px #000}
