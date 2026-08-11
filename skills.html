@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skills & Education | Aditya Palode</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="space"></canvas>
+<div class="noise"></div>
+
+<header>
+  <a class="brand" href="index.html"><span>AP</span> ADITYA<span class="dot">.</span></a>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="about.html">ABOUT</a>
+    <a href="projects.html">PROJECTS</a>
+    <a class="active" href="skills.html">SKILLS</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+  <button class="hamb" onclick="menu()">☰</button>
+</header>
+
+<main class="skills-page reveal">
+  <section class="skills-head">
+    <p class="kicker">03 / KNOWLEDGE • EDUCATION • CERTIFICATIONS</p>
+    <h1 class="page-title"><em>SKILLS.</em></h1>
+    <p class="skills-intro">A professional snapshot of my technical skills, academic foundation, current learning, and verified certifications.</p>
+  </section>
+
+  <section class="education-card glass">
+    <div class="section-number">01</div>
+    <div class="edu-content">
+      <div class="edu-label">EDUCATION</div>
+      <h2>B.tech (Integrated) Computer Science ( DATA SCIENCE )</h2>
+      <h3>Computer Science (Data Science)</h3>
+      <p class="university"><strong>College:</strong> MGM University, School of Engineering & Technology (SoET)<br><strong>Branch:</strong> Computer Science (Data Science)</p>
+      <div class="edu-meta">
+        <div><small>PROGRAM</small><strong>6-Year Integrated Program</strong></div>
+        <div><small>ENTRY</small><strong>Joined After 10th</strong></div>
+        <div><small>COMPLETION</small><strong>September 2030</strong></div>
+      </div>
+    </div>
+    <div class="edu-orb"><div>DATA<br>SCIENCE</div></div>
+  </section>
+
+  <section class="learning-section">
+    <div class="section-title-row">
+      <div><p class="kicker">02 / CURRENT LEARNING</p><h2>LEARNING <em>SUBJECTS</em></h2></div>
+      <span class="count">10 SUBJECTS</span>
+    </div>
+
+    <div class="learning-grid">
+      <div class="learn-card glass"><span class="learn-no">01</span><div class="learn-icon brand-logo"><img src="https://cdn.simpleicons.org/python/3776AB" alt="Python"></div><h3>Python</h3><p>Programming & Data Science</p></div>
+      <div class="learn-card glass"><span class="learn-no">02</span><div class="learn-icon brand-logo"><img src="https://cdn.simpleicons.org/openjdk/F89820" alt="Java"></div><h3>Java</h3><p>Object-Oriented Programming</p></div>
+      <div class="learn-card glass"><span class="learn-no">03</span><div class="learn-icon brand-logo"><img src="https://cdn.simpleicons.org/cplusplus/00599C" alt="C++"></div><h3>C++</h3><p>Programming & Problem Solving</p></div>
+      <div class="learn-card glass"><span class="learn-no">04</span><div class="learn-icon brand-logo"><img src="https://cdn.simpleicons.org/html5/E34F26" alt="HTML5"></div><h3>HTML & CSS</h3><p>Web Development</p></div>
+      <div class="learn-card glass"><span class="learn-no">05</span><div class="learn-icon brand-logo"><img src="https://cdn.simpleicons.org/mysql/4479A1" alt="SQL"></div><h3>SQL</h3><p>Database Fundamentals</p></div>
+      <div class="learn-card glass"><span class="learn-no">06</span><div class="learn-icon text-icon">DSA</div><h3>Data Structures & Algorithms</h3><p>Logic & Efficient Problem Solving</p></div>
+      <div class="learn-card glass"><span class="learn-no">07</span><div class="learn-icon text-icon">DS</div><h3>Data Science</h3><p>Data Analysis & Insights</p></div>
+      <div class="learn-card glass"><span class="learn-no">08</span><div class="learn-icon text-icon">Σ</div><h3>Statistics & Probability</h3><p>Mathematical Data Reasoning</p></div>
+      <div class="learn-card glass"><span class="learn-no">09</span><div class="learn-icon text-icon">SE</div><h3>Software Engineering</h3><p>Software Development Principles</p></div>
+      <div class="learn-card glass"><span class="learn-no">10</span><div class="learn-icon text-icon">AI</div><h3>AI & Machine Learning</h3><p>Intelligent Systems & Models</p></div>
+    </div>
+  </section>
+
+  <section class="coding-section">
+    <div class="section-title-row">
+      <div><p class="kicker">03 / TECHNICAL FOUNDATION</p><h2>CODING <em>LANGUAGES</em></h2></div>
+      <span class="count">5 LANGUAGES</span>
+    </div>
+
+    <div class="coding-grid">
+      <div class="coding-card glass"><img src="https://cdn.simpleicons.org/python/3776AB" alt="Python"><div><span>01</span><h3>Python</h3><p>Data Science • Programming</p></div></div>
+      <div class="coding-card glass"><img src="https://cdn.simpleicons.org/openjdk/F89820" alt="Java"><div><span>02</span><h3>Java</h3><p>OOP • Application Development</p></div></div>
+      <div class="coding-card glass"><img src="https://cdn.simpleicons.org/cplusplus/00599C" alt="C++"><div><span>03</span><h3>C++</h3><p>Problem Solving • DSA</p></div></div>
+      <div class="coding-card glass"><img src="https://cdn.simpleicons.org/html5/E34F26" alt="HTML5"><div><span>04</span><h3>HTML5</h3></div></div>
+      <div class="coding-card glass"><img src="https://cdn.simpleicons.org/css/1572B6" alt="CSS3"><div><span>05</span><h3>CSS3</h3></div></div>
+    </div>
+  </section>
+
+  <section class="cert-section">
+    <div class="section-title-row">
+      <div><p class="kicker">04 / VERIFIED LEARNING</p><h2>MY <em>CERTIFICATIONS</em></h2></div>
+      <span class="count">04 COMPLETED</span>
+    </div>
+
+    <div class="cert-list">
+      <article class="cert glass cert-click" onclick="openCertificate('assets/certificates/software-engineering.jpeg','CS302: Software Engineering','Saylor University')">
+        <div class="cert-index">01</div><div class="cert-mark">SE</div>
+        <div class="cert-info"><span>CERTIFICATION</span><h3>Software Engineering</h3><p>By <b>Saylor University</b></p></div>
+        <div class="verified">✓ VIEW CERTIFICATE</div>
+      </article>
+      <article class="cert glass cert-click" onclick="openCertificate('assets/certificates/programming-java.jpeg','Programming using Java','Infosys Springboard')">
+        <div class="cert-index">02</div><div class="cert-mark">JA</div>
+        <div class="cert-info"><span>CERTIFICATION</span><h3>Programming using Java</h3><p>By <b>Infosys Springboard</b></p></div>
+        <div class="verified">✓ VIEW CERTIFICATE</div>
+      </article>
+      <article class="cert glass cert-click" onclick="openCertificate('assets/certificates/data-science-essentials.jpeg','Data Science Essentials','Reliance Foundation Skilling Academy')">
+        <div class="cert-index">03</div><div class="cert-mark">DS</div>
+        <div class="cert-info"><span>CERTIFICATION</span><h3>Data Science Essentials</h3><p>By <b>Reliance Foundation Skilling Academy</b></p></div>
+        <div class="verified">✓ VIEW CERTIFICATE</div>
+      </article>
+      <article class="cert glass cert-click" onclick="openCertificate('assets/certificates/artificial-intelligence.jpeg','Artificial Intelligence','Reliance Foundation Skilling Academy')">
+        <div class="cert-index">04</div><div class="cert-mark">AI</div>
+        <div class="cert-info"><span>CERTIFICATION</span><h3>Artificial Intelligence</h3><p>By <b>Reliance Foundation Skilling Academy</b></p></div>
+        <div class="verified">✓ VIEW CERTIFICATE</div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<div id="certificateModal" class="certificate-modal" aria-hidden="true" onclick="closeCertificate(event)">
+  <div class="certificate-window" onclick="event.stopPropagation()">
+    <button class="certificate-close" onclick="closeCertificate()">×</button>
+    <div class="certificate-top"><div><span id="certModalLabel">CERTIFICATION</span><h2 id="certModalTitle">Certificate</h2><p id="certModalProvider"></p></div><span class="modal-badge">✓ VERIFIED</span></div>
+    <div class="certificate-image-wrap"><img id="certModalImage" src="" alt="Certificate"></div>
+  </div>
+</div>
+<footer>© 2026 ADITYA PALODE</footer>
+<script src="js/script.js"></script>
+</body>
+</html>
