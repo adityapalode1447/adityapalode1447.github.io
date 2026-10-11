@@ -5,3 +5,41 @@
 
 /* Certificate viewer: open directly over the current page */
 .certificate-modal{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,4,12,.88);backdrop-filter:blur(14px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}.certificate-modal.show{opacity:1;visibility:visible;pointer-events:auto}.certificate-window{position:relative;width:min(94vw,1050px);max-height:94vh;overflow:auto;background:#071220;border:1px solid rgba(102,232,255,.45);border-radius:16px;box-shadow:0 25px 100px rgba(0,0,0,.7),0 0 50px rgba(0,190,255,.12);transform:scale(.94) translateY(15px);transition:transform .25s ease}.certificate-modal.show .certificate-window{transform:scale(1) translateY(0)}.certificate-close{position:absolute;right:14px;top:12px;z-index:2;width:42px;height:42px;border:1px solid rgba(255,255,255,.2);border-radius:50%;background:rgba(0,0,0,.5);color:#fff;font-size:28px;line-height:1;cursor:pointer}.certificate-top{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:24px 65px 18px 24px}.certificate-top span:first-child{font:700 8px 'Orbitron';letter-spacing:2px;color:var(--cyan)}.certificate-top h2{font:800 24px 'Orbitron';margin:7px 0}.certificate-top p{color:var(--muted);font-size:12px;margin:0}.modal-badge{font:700 9px 'Orbitron';letter-spacing:1px;color:#9ff0c5;border:1px solid rgba(100,230,160,.35);padding:9px 12px;border-radius:20px;white-space:nowrap}.certificate-image-wrap{padding:0 24px 24px;text-align:center}.certificate-image-wrap img{display:block;width:100%;height:auto;max-height:76vh;object-fit:contain;margin:auto;border-radius:8px;background:#fff}.cert-click{cursor:pointer}.cert-click:active{transform:scale(.99)}
+
+
+/* ===== NEW NEON TYPOGRAPHY + SPACE BACKGROUND POLISH (layout preserved) ===== */
+html, body, p, li, label, input, textarea, button, .subtitle, .muted,
+.bigtext, .big p:not(.bigtext), .project p, .overview-card p,
+.cert-info p, .university, .about-summary, .facts b, .edu-content h3,
+.social-link b, .form-success {
+  font-family: 'Exo 2', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6, .brand, nav a, .kicker, .page-title,
+.hero h1, .project h2, .edu-label, .section-number, .section-title-row h2,
+.count, .learn-no, .learn-card h3, .cert-index, .cert-info h3,
+.cert-info > span, .verified, .about-name, .about-role,
+.about-education h2, .home-section-head h2, .overview-card > span,
+.overview-card h3, .mini-link, .btn, .ticker, footer,
+.form-heading span, .form-heading h2, .contact-links a,
+.contact-links small, .orbit-label, .skill-center, .skill-orbit > span {
+  font-family: 'Oxanium', sans-serif !important;
+  letter-spacing: .45px;
+}
+.hero h1, .page-title, .about-name, .about-education h2,
+.home-section-head h2, .section-title-row h2 {
+  font-weight: 800;
+  text-shadow: 0 0 24px rgba(0, 220, 255, .18);
+}
+#space {
+  background:
+    radial-gradient(ellipse at 12% 22%, rgba(122, 35, 255, .18), transparent 34%),
+    radial-gradient(ellipse at 82% 28%, rgba(0, 160, 255, .16), transparent 38%),
+    radial-gradient(ellipse at 50% 92%, rgba(0, 65, 180, .18), transparent 42%),
+    #01040b !important;
+}
+.noise { opacity: .045; }
+@media (prefers-reduced-motion: reduce) {
+  .cursor-trail-dot { display: none !important; }
+}
+.cursor-trail-dot{position:fixed;z-index:9998;width:4px;height:4px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);box-shadow:0 0 9px currentColor,0 0 18px rgba(0,220,255,.35);opacity:.9;transition:transform .48s ease,opacity .48s ease}
+.cursor-trail-dot.fade{opacity:0;transform:translate(-50%,-50%) scale(.1)}
