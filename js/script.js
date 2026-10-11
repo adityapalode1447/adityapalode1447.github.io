@@ -12,7 +12,7 @@ function resize(){
   stars=Array.from({length:count},()=>({
     x:(Math.random()-.5)*w*1.7,y:(Math.random()-.5)*h*1.7,
     z:Math.random()*1, p:Math.random(), size:Math.random()*1.7+.15,
-    hue:Math.random()<.12?190:Math.random()<.08?275:215
+    hue:Math.random()<.20?190:Math.random()<.16?275:Math.random()<.18?205:220
   }));
 }
 addEventListener('resize',resize);
@@ -93,3 +93,23 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
   }
 });
+
+
+// Neon cursor flow trail (decorative only; existing layout and navigation unchanged)
+(function(){
+  if (matchMedia('(hover: none)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let last = 0;
+  addEventListener('pointermove', function(e){
+    const now = performance.now();
+    if (now - last < 24) return;
+    last = now;
+    const dot = document.createElement('span');
+    dot.className = 'cursor-trail-dot';
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+    dot.style.background = Math.random() > .48 ? '#66e8ff' : '#b26cff';
+    document.body.appendChild(dot);
+    requestAnimationFrame(()=>{dot.classList.add('fade');});
+    setTimeout(()=>dot.remove(), 520);
+  }, {passive:true});
+})();
