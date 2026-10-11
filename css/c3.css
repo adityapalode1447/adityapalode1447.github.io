@@ -81,3 +81,46 @@ h1, h2, h3, h4, h5, h6, .brand, nav a, .kicker, .page-title,
 }
 @media(max-width:500px){.brand{font-size:16px!important;letter-spacing:.3px!important}}
 @media(prefers-reduced-motion:reduce){.space-aurora{animation:none}}
+
+
+/* ===== DEMO HTML SPACE BACKGROUND ONLY ===== */
+/* Keep all existing portfolio content, fonts, sections and layout untouched. */
+.space-aurora{
+  position:fixed !important;
+  inset:-15% !important;
+  z-index:-4 !important;
+  pointer-events:none !important;
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(78,12,139,.34), transparent 35%),
+    radial-gradient(ellipse at 80% 30%, rgba(0,91,186,.28), transparent 38%),
+    radial-gradient(ellipse at 50% 90%, rgba(6,29,91,.48), transparent 50%) !important;
+  filter:saturate(1.12);
+  animation:demoSpaceAurora 22s ease-in-out infinite alternate;
+}
+#space{
+  background:
+    radial-gradient(ellipse at 12% 18%, rgba(120,25,255,.10), transparent 35%),
+    radial-gradient(ellipse at 82% 25%, rgba(0,105,255,.10), transparent 38%),
+    radial-gradient(ellipse at 50% 92%, rgba(0,225,255,.055), transparent 42%),
+    #030817 !important;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  opacity:.15;
+  background-image:
+    linear-gradient(rgba(0,217,255,.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,217,255,.10) 1px, transparent 1px);
+  background-size:54px 54px;
+  -webkit-mask-image:linear-gradient(transparent,black 15%,black 80%,transparent);
+  mask-image:linear-gradient(transparent,black 15%,black 80%,transparent);
+}
+@keyframes demoSpaceAurora{
+  0%{transform:translate3d(-1.2%,0,0) scale(1);filter:hue-rotate(0deg) saturate(1.12)}
+  50%{transform:translate3d(1.2%,-.8%,0) scale(1.035);filter:hue-rotate(12deg) saturate(1.22)}
+  100%{transform:translate3d(0,1.2%,0) scale(1.015);filter:hue-rotate(-10deg) saturate(1.15)}
+}
+@media(prefers-reduced-motion:reduce){.space-aurora{animation:none}}
