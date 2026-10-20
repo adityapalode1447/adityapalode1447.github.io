@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Attendance Analytics | Aditya Devidas Palode</title>
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050b14;--p:#0a1422;--ln:#162840;--tx:#dbe9f7;--mu:#8aa0b8;--cy:#5ee1ff;--rd:#ff5d73;--am:#ffb454;--gn:#4ade9f;--in:#07101c;--tr:#0d1b2e;--on:#04111c;--th:75%;color-scheme:dark}
+:root[data-theme=light]{--bg:#f3f6fa;--p:#fff;--ln:#d3deea;--tx:#10243a;--mu:#52677d;--cy:#0b7a9e;--rd:#cf3550;--am:#a86400;--gn:#0f8a57;--in:#fff;--tr:#e3eaf2;--on:#fff;color-scheme:light}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:400 15px/1.5 'Exo 2',system-ui,sans-serif;padding:clamp(12px,3vw,32px);max-width:1180px;margin:auto}
+h1,h2,h3,.big{font-family:'Bai Jamjuree',system-ui,sans-serif}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.05}
+h2{font-size:19px;margin-bottom:10px}
+:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.card{background:var(--p);border:1px solid var(--ln);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.mu{color:var(--mu);font-size:13px}
+.top{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-bottom:14px}
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid var(--ln);padding-bottom:10px}
+button,input,select,textarea{font:inherit;color:var(--tx)}
+.tab,.btn{background:none;border:1px solid var(--ln);border-radius:99px;padding:6px 16px;cursor:pointer;color:var(--mu)}
+.tab[aria-selected=true]{border-color:var(--cy);color:var(--cy);background:#5ee1ff14}
+.btn.pri{background:var(--cy);color:var(--on);border-color:var(--cy);font-weight:600}
+.btn.dg{color:var(--rd);border-color:#ff5d7355}
+.btn:hover,.tab:hover{border-color:var(--cy)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:2px 12px;font-size:13px}
+input,select,textarea{background:var(--in);border:1px solid var(--ln);border-radius:8px;padding:8px 10px;width:100%}
+input[type=checkbox]{width:auto}
+label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
+label.ck{display:flex;gap:8px;align-items:center;margin:0;padding-bottom:8px}
+code{background:var(--tr);padding:1px 6px;border-radius:5px}
+.auth{max-width:420px;margin:7vh auto}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.kp .card{margin:0}
+.big{font-size:34px;font-weight:700;line-height:1.1;display:block}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--ln)}
+th{color:var(--mu);font-weight:500;font-size:12px}
+.sc{overflow-x:auto}
+.pill{display:inline-block;min-width:52px;text-align:center;border-radius:99px;padding:1px 10px;font-size:12px;font-weight:600}
+.hi{background:#ff5d7326;color:var(--rd)}.md{background:#ffb45426;color:var(--am)}.lo{background:#4ade9f1f;color:var(--gn)}
+.bar{position:relative;height:10px;background:var(--tr);border-radius:5px;margin:8px 0}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+.bar:after{content:"";position:absolute;left:var(--th);top:-3px;bottom:-3px;width:2px;background:var(--am)}
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.seg{display:inline-flex;border:1px solid var(--ln);border-radius:99px;overflow:hidden}
+.seg button{background:none;border:0;padding:4px 12px;cursor:pointer;color:var(--mu)}
+.seg .on1{background:#4ade9f26;color:var(--gn)}.seg .on0{background:#ff5d7326;color:var(--rd)}
+.seg .on2,.seg .on3{background:#ffb45426;color:var(--am)}.seg .on4{background:#5ee1ff26;color:var(--cy)}
+.err{color:var(--rd);font-size:13px;min-height:20px;margin-top:8px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--cy);color:var(--on);padding:8px 18px;border-radius:99px;font-weight:600;z-index:9}
+.toast.bad{background:var(--rd);color:#fff}
+.fc{border-left:3px solid var(--cy);padding:4px 10px;margin-top:8px;font-size:13px;color:var(--mu)}
+.warn{border:1px solid #ff5d7366;background:#ff5d7314;border-radius:14px;padding:12px 16px;margin-bottom:14px}
+.warn b{color:var(--rd)}
+.hm{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,14px);grid-auto-columns:14px;gap:3px;overflow-x:auto;padding:2px 0 6px}
+.hm i,.lg i{display:block;width:14px;height:14px;border-radius:3px;background:var(--tr)}
+.hm .g,.lg .g{background:var(--gn)}.hm .y,.lg .y{background:var(--am)}.hm .r,.lg .r{background:var(--rd)}.hm .f{background:transparent}
+.lg{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--mu);margin-top:6px}
+.lg span{display:inline-flex;gap:6px;align-items:center}
+.ch{width:100%;height:auto;display:block}
+.tl{fill:none;stroke:var(--cy);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.tp{fill:var(--p);stroke:var(--cy);stroke-width:2.5}
+.tg{stroke:var(--ln);stroke-width:1}
+.tt{stroke:var(--am);stroke-width:1.5;stroke-dasharray:5 4}
+.ax{font-size:11px;fill:var(--mu)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+
+.tab,.btn,.seg button{transition:transform .18s ease,box-shadow .18s ease,border-color .18s,color .18s,background .18s}
+.tab:hover,.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 18px -8px color-mix(in srgb,var(--cy) 60%,transparent)}
+.tab:active,.btn:active:not(:disabled){transform:translateY(0) scale(.97);box-shadow:none}
+.tab:not([aria-selected=true]):hover{color:var(--tx)}
+.seg button:hover{color:var(--tx);background:color-mix(in srgb,var(--cy) 10%,transparent)}
+.card{transition:border-color .2s,box-shadow .2s,transform .2s}
+.kp .card:hover,.sg .card:hover,.pc:hover{transform:translateY(-3px);border-color:var(--cy);box-shadow:0 12px 24px -14px color-mix(in srgb,var(--cy) 70%,transparent)}
+td{transition:background .15s}tr:hover>td{background:color-mix(in srgb,var(--cy) 6%,transparent)}
+input,select,textarea{transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cy);box-shadow:0 0 0 3px color-mix(in srgb,var(--cy) 25%,transparent)}
+.hm i{transition:transform .12s}.hm i:hover{transform:scale(1.35)}
+.fade{animation:fin .32s ease both}
+@keyframes fin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.toast{animation:fin .25s ease both}
+.av{width:46px;height:46px;flex:none;border-radius:50%;background:linear-gradient(135deg,var(--cy),var(--gn));color:var(--on);display:grid;place-items:center;font:700 18px 'Bai Jamjuree',system-ui,sans-serif;transition:transform .2s}
+.av.sm{width:36px;height:36px;font-size:14px}.av.lg{width:64px;height:64px;font-size:24px}
+.chip{display:flex;gap:10px;align-items:center;background:none;border:0;cursor:pointer;text-align:left;padding:0;color:var(--tx)}
+.chip:hover .av,.pc:hover .av{transform:scale(1.08) rotate(-4deg)}
+.pc{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.pc .info{flex:1;min-width:200px}.pc .stats{display:flex;gap:22px;flex-wrap:wrap}.pc .stats b{display:block;font:700 20px 'Bai Jamjuree',system-ui,sans-serif}
+dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:12px 0}dl.kv dt{color:var(--mu);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.pr{display:none}
+@media print{
+ body{background:#fff;color:#000;padding:0;max-width:none}
+ .np{display:none!important}.pr{display:block!important;margin-bottom:10px}
+ .card{border:0;background:none;padding:0;margin:0}
+ th,td{border-color:#999;color:#000}th{color:#333}.mu{color:#333}
+ .pill{border:1px solid #888;background:none!important;color:#000!important}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const $=(s,r=document)=>r.querySelector(s),K='att_app_v1',KT='att_theme';
+const E=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const ld=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10); /* local date, not UTC */
+const fd=d=>d?new Date(d+'T00:00:00Z').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}):'';
+const SLOTS=['Lecture 1','Lecture 2','Lecture 3','Lecture 4','Lecture 5','Lecture 6','Lab','Tutorial'];
+const ST={1:'Present',0:'Absent',2:'Leave',3:'Medical',4:'On duty (OD)'},SH={1:'P',0:'A',2:'L',3:'Med',4:'OD'};
+const DEF=['Physics','Mathematics','Chemistry','Biology','History','English','Marathi','Social Science'];
+let TH=75;
+const setTH=()=>{TH=+D.settings.th||75;document.documentElement.style.setProperty('--th',TH+'%')};
+function norm(d){
+  d=d&&typeof d=='object'?d:{};
+  ['users','students','sessions'].forEach(k=>{if(!Array.isArray(d[k]))d[k]=[]});
+  if(!Array.isArray(d.subjects))d.subjects=DEF.slice();
+  d.subjects=d.subjects.map(s=>typeof s=='string'?{name:s,year:'',branch:'',teacher:''}:{name:String(s.name),year:s.year||'',branch:s.branch||'',teacher:s.teacher||''});
+  d.sessions.forEach(s=>{if(!s.slot)s.slot=SLOTS[0]});
+  d.settings=Object.assign({th:75,sem:''},d.settings);
+  d.settings.map=Object.assign({2:'a',3:'x',4:'p'},d.settings.map);
+  d.undo=d.undo||null;return d}
+let D;try{D=JSON.parse(localStorage.getItem(K))}catch(e){}
+D=norm(D);setTH();
+let theme='dark';try{theme=localStorage.getItem(KT)||'dark'}catch(e){}
+const applyTheme=()=>document.documentElement.dataset.theme=theme;applyTheme();
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}};
+let me=null;try{me=JSON.parse(sessionStorage.getItem('me'))}catch(e){}
+const today=ld(new Date());
+let ANIM=false;
+let tab=me?(me.role=='student'?'my':'dash'):'',A={mode:'login',role:'student'},
+M={sub:'',date:today,slot:SLOTS[0],year:'',branch:'',q:'',v:{}},RP={year:'',branch:'',q:'',from:'',to:'',def:false},
+PR={sub:'',from:'',to:''},T={g:'w'},FC={sub:'',n:5},SQ='',SV='',BT='',IM=null;
+
+/* ---------- helpers ---------- */
+const isAdm=()=>me&&me.role=='admin';
+const subObjs=()=>isAdm()?D.subjects:D.subjects.filter(s=>s.teacher==me.id);
+const vis=()=>subObjs().map(s=>s.name);
+const sobj=n=>D.subjects.find(s=>s.name==n);
+const normBranch=v=>String(v||'').toLowerCase().replace(/\b(b\s*\.?\s*tech|bachelor\s*of\s*technology)\b/g,'').replace(/[^a-z0-9]+/g,'').trim();
+const applies=(b,s)=>(!b.year||String(b.year)==String(s.year))&&(!b.branch||normBranch(b.branch)==normBranch(s.branch));
+const myStu=()=>isAdm()?D.students:D.students.filter(s=>subObjs().some(b=>applies(b,s)));
+const eff=v=>v==1?1:v==0?0:({p:1,a:0,x:null})[D.settings.map[v]]??null;
+const below=v=>v!=null&&v<TH-1e-9;
+const pc=v=>v==null?'–':Math.round(v)+'%',cl=v=>v==null?'':below(v)?'hi':v<Math.min(TH+10,100)?'md':'lo';
+const pill=(v,t)=>`<span class="pill ${cl(v)}"${t?` title="${E(t)}"`:''}>${pc(v)}</span>`;
+const hash=async s=>{if(!crypto.subtle)return btoa(s);const b=new TextEncoder().encode('att|'+s);return[...new Uint8Array(await crypto.subtle.digest('SHA-256',b))].map(x=>x.toString(16).padStart(2,'0')).join('')};
+function stat(prn,sub,r){
+  const S=sub==null?null:new Set([].concat(sub));let p=0,t=0,x=0;
+  D.sessions.forEach(s=>{
+    if((S&&!S.has(s.sub))||!(prn in s.m))return;
+    if(r&&((r.from&&s.date<r.from)||(r.to&&s.date>r.to)))return;
+    const e=eff(s.m[prn]);if(e==null)x++;else{t++;p+=e}});
+  return{p,t,x,pc:t?p/t*100:null}}
+const toast=(m,bad)=>{document.querySelectorAll('.toast').forEach(t=>t.remove());const d=document.createElement('div');d.className='toast'+(bad?' bad':'');d.setAttribute('role','status');d.textContent=m;document.body.append(d);setTimeout(()=>d.remove(),2600)};
+const opts=(a,v,all)=>(all?`<option value="">${all}</option>`:'')+a.map(x=>`<option${x==v?' selected':''}>${E(x)}</option>`).join('');
+const branches=()=>[...new Set(D.students.map(s=>s.branch))];
+const years=()=>[...new Set(D.students.map(s=>s.year))].sort((a,b)=>a-b);
+const flt=(f,base)=>(base||myStu()).filter(s=>(!f.year||s.year==f.year)&&(!f.branch||s.branch==f.branch)&&(!f.q||(s.name+s.prn).toLowerCase().includes(f.q.toLowerCase())));
+const wk=d=>{const z=new Date(d+'T00:00:00Z');z.setUTCDate(z.getUTCDate()-(z.getUTCDay()+6)%7);return z.toISOString().slice(0,10)};
+const cell=c=>{c=String(c);if(/^[=+\-@\t\r]/.test(c))c="'"+c;return'"'+c.replace(/"/g,'""')+'"'}; /* CSV injection guard */
+function dl(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+const staffIdTaken=id=>D.users.some(u=>u.id.toLowerCase()==id.toLowerCase())||D.students.some(s=>s.prn.toLowerCase()==id.toLowerCase());
+
+/* ---------- auth ---------- */
+function auth(){
+  const su=A.mode=='signup',ad=A.role=='admin';
+  return`<div class="card auth"><h1>Attendance Analytics</h1>
+  <p class="mu" style="margin:6px 0 14px">Track attendance subject by subject. Admins and teachers record it, students see their own numbers.</p>
+  <div class="nav" style="border:0;padding:0">
+   <button class="tab" role="tab" aria-selected="${!su}" data-a="mode" data-v="login">Log in</button>
+   <button class="tab" role="tab" aria-selected="${su}" data-a="mode" data-v="signup">Sign up</button></div>
+  ${su?`<label for="role">I am a</label><select id="role" data-f="role"><option value="student"${!ad?' selected':''}>Student</option><option value="admin"${ad?' selected':''}>Admin (first-time setup)</option></select>`:''}
+  ${su&&ad?'<label for="nm">Full name</label><input id="nm" autocomplete="name">':''}
+  <label for="uid">${su&&!ad?'PRN (as added by your admin)':!su?'Admin / teacher username or student PRN':'Choose an admin username'}</label>
+  <input id="uid" autocomplete="username">
+  <label for="pw">Password</label><input id="pw" type="password" autocomplete="${su?'new-password':'current-password'}">
+  <p class="err" id="err" role="alert"></p>
+  <button class="btn pri" style="width:100%;margin-top:6px" data-a="${su?'signup':'login'}">${su?'Create account':'Log in'}</button>
+  ${su?'<p class="mu" style="margin-top:12px">The first admin account is created here. Students can sign up only after the admin adds their PRN. Teachers get their login from the admin.</p>':''}
+  <p style="margin-top:14px"><button class="btn sm" data-a="theme">${theme=='dark'?'Light mode':'Dark mode'}</button></p></div>`;
+}
+const err=(m,id)=>{const e=$('#'+(id||'err'));if(e)e.textContent=m;return 1};
+const ini=n=>String(n).trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?';
+async function signIn(u){me={id:u.id,role:u.role,name:u.name};sessionStorage.setItem('me',JSON.stringify(me));tab=u.role=='student'?'my':'dash';ANIM=true;R()}
+async function login(){
+  const id=$('#uid').value.trim().toLowerCase(),h=await hash($('#pw').value),u=D.users.find(u=>u.id.toLowerCase()==id);
+  if(!u||u.h!=h)return err('ID or password is wrong. Check both and try again.');
+  signIn(u)}
+async function signup(){
+  const id=$('#uid').value.trim(),pw=$('#pw').value,ad=A.role=='admin',nm=ad?$('#nm').value.trim():'';
+  if(!id||pw.length<6)return err('Enter an ID and a password of at least 6 characters.');
+  if(D.users.some(u=>u.id.toLowerCase()==id.toLowerCase()))return err('This ID already has an account. Log in instead.');
+  let u;
+  if(ad){
+    if(D.users.some(u=>u.role=='admin'))return err('An admin already exists. Ask them to add you as a student or teacher.');
+    if(!nm)return err('Enter your name.');
+    u={id,role:'admin',name:nm,h:await hash(pw),created:today};
+  }else{
+    const s=D.students.find(s=>s.prn.toLowerCase()==id.toLowerCase());
+    if(!s)return err('This PRN is not in the student list. Ask your admin to add you first.');
+    u={id:s.prn,role:'student',name:s.name,h:await hash(pw),created:today};
+  }
+  D.users.push(u);save();signIn(u)}
+
+/* ---------- shell ---------- */
+function tabs(){
+  if(me.role=='admin')return[['dash','Dashboard'],['stu','Students'],['tch','Teachers'],['mark','Mark attendance'],['past','Past records'],['rep','Reports'],['sub','Subjects'],['set','Settings'],['acc','Profile']];
+  if(me.role=='teacher')return[['dash','Dashboard'],['mark','Mark attendance'],['past','Past records'],['rep','Reports'],['acc','Profile']];
+  return[['my','My attendance'],['hist','History'],['acc','Profile']]}
+function shell(){
+  const Tb=tabs();if(!Tb.some(t=>t[0]==tab)&&!(tab=='sv'&&isAdm()))tab=Tb[0][0];
+  const v={dash,stu,tch,mark,past,rep,sub,set,acc,my,hist,sv}[tab]();
+  return`<div class="top np"><div><h1 style="font-size:28px">Attendance Analytics</h1><button class="chip" style="margin-top:6px" data-a="tab" data-v="acc" aria-label="Open my profile"><span class="av sm">${E(ini(me.name))}</span><span><b style="font-weight:600">${E(me.name)}</b><br><span class="mu">${me.role=='admin'?'Admin':me.role=='teacher'?'Teacher':'Student '+E(me.id)} &middot; View profile</span></span></button></div>
+  <span><button class="btn" data-a="theme">${theme=='dark'?'Light mode':'Dark mode'}</button> <button class="btn" data-a="logout">Log out</button></span></div>
+  <div class="nav np" role="tablist">${Tb.map(t=>`<button class="tab" role="tab" aria-selected="${t[0]==tab||(tab=='sv'&&t[0]=='stu')}" data-a="tab" data-v="${t[0]}">${t[1]}</button>`).join('')}</div>${v}`;
+}
+function R(){
+  const a=$('#app'),ae=document.activeElement;let sel=null,ss=null,se=null;
+  if(ae&&a.contains(ae)){const d=ae.dataset;
+    sel=ae.id?'#'+ae.id:d.a?`[data-a="${CSS.escape(d.a)}"]`+(d.p!=null?`[data-p="${CSS.escape(d.p)}"]`:'')+(d.v!=null?`[data-v="${CSS.escape(d.v)}"]`:''):null;
+    try{ss=ae.selectionStart;se=ae.selectionEnd}catch(e){}}
+  a.innerHTML=me?shell():auth();
+  if(ANIM){a.classList.remove('fade');void a.offsetWidth;a.classList.add('fade');ANIM=false}
+  if(sel){const n=$(sel);if(n){n.focus({preventScroll:true});try{if(ss!=null)n.setSelectionRange(ss,se)}catch(e){}}}}
+
+/* ---------- charts ---------- */
+function trend(){
+  const V=new Set(vis()),P=new Set(myStu().map(s=>s.prn)),g={};
+  D.sessions.forEach(s=>{if(!V.has(s.sub))return;const k=T.g=='m'?s.date.slice(0,7):wk(s.date);
+    for(const p in s.m){if(!P.has(p))continue;const e=eff(s.m[p]);if(e==null)continue;const o=g[k]=g[k]||{p:0,t:0};o.t++;o.p+=e}});
+  const pts=Object.keys(g).sort().slice(-12).map(k=>({k,pc:g[k].p/g[k].t*100,t:g[k].t}));
+  if(pts.length<2)return`<p class="mu">Record classes in at least two different ${T.g=='m'?'months':'weeks'} to see a trend.</p>`;
+  const W=640,H=230,L=40,Rt=70,Tp=14,B=34,lo=Math.max(0,Math.floor((Math.min(...pts.map(p=>p.pc),TH)-8)/10)*10),step=(100-lo)>50?20:10,
+  x=i=>L+i*(W-L-Rt)/(pts.length-1),y=v=>Tp+(100-v)*(H-Tp-B)/(100-lo),
+  lbl=k=>T.g=='m'?new Date(k+'-01T00:00:00Z').toLocaleDateString('en-IN',{month:'short',year:'2-digit',timeZone:'UTC'}):new Date(k+'T00:00:00Z').toLocaleDateString('en-IN',{day:'numeric',month:'short',timeZone:'UTC'});
+  let grid='';for(let v=lo;v<=100;v+=step)grid+=`<line class="tg" x1="${L}" x2="${W-Rt}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}%</text>`;
+  const every=pts.length>8?2:1;
+  return`<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Attendance trend over ${pts.length} ${T.g=='m'?'months':'weeks'}. Latest ${pc(pts[pts.length-1].pc)}, requirement ${TH}%.">${grid}
+  <line class="tt" x1="${L}" x2="${W-Rt}" y1="${y(TH)}" y2="${y(TH)}"/><text class="ax" x="${W-Rt+6}" y="${y(TH)+4}">Min ${TH}%</text>
+  <polyline class="tl" points="${pts.map((p,i)=>x(i)+','+y(p.pc)).join(' ')}"/>
+  ${pts.map((p,i)=>`<circle class="tp" cx="${x(i)}" cy="${y(p.pc)}" r="5"><title>${T.g=='m'?'':'Week of '}${lbl(p.k)}: ${pc(p.pc)} (${p.t} marks)</title></circle>${i%every==0?`<text class="ax" x="${x(i)}" y="${H-12}" text-anchor="middle">${lbl(p.k)}</text>`:''}`).join('')}</svg>`;
+}
+function heat(prn){
+  const days={};
+  D.sessions.forEach(s=>{if(!(prn in s.m))return;const d=days[s.date]=days[s.date]||{p:0,t:0},e=eff(s.m[prn]);if(e!=null){d.t++;d.p+=e}});
+  const t0=new Date(wk(today)+'T00:00:00Z');t0.setUTCDate(t0.getUTCDate()-7*19);let h='';
+  for(let i=0;i<140;i++){const z=new Date(t0);z.setUTCDate(z.getUTCDate()+i);const s=z.toISOString().slice(0,10);
+    if(s>today){h+='<i class="f"></i>';continue}
+    const d=days[s],c=!d?'':!d.t?'':d.p==d.t?'g':d.p==0?'r':'y',tt=!d?'No class':d.t?`${d.p} of ${d.t} classes attended`:'Excused';
+    h+=`<i class="${c}" title="${fd(s)}: ${tt}"></i>`}
+  return`<div class="card"><h2>Attendance calendar</h2><p class="mu">Last 20 weeks, each column is a week starting Monday. Hover a square for details.</p>
+  <div class="hm" role="img" aria-label="Calendar heatmap of daily attendance for the last 20 weeks">${h}</div>
+  <div class="lg"><span><i></i>No class</span><span><i class="g"></i>All attended</span><span><i class="y"></i>Some missed</span><span><i class="r"></i>All missed</span></div></div>`;
+}
+
+/* ---------- dashboard ---------- */
+function pcard(){
+  const u=D.users.find(x=>x.id==me.id)||{},ad=isAdm();
+  return`<div class="card pc"><span class="av lg">${E(ini(me.name))}</span><div class="info"><h2 style="margin:0">${E(me.name)}</h2><p class="mu">${ad?'Admin':'Teacher'} &middot; @${E(me.id)}${u.email?' &middot; '+E(u.email):''}</p></div>
+  <div class="stats">${ad?`<div><b>${D.students.length}</b><span class="mu">Students</span></div><div><b>${D.users.filter(x=>x.role=='teacher').length}</b><span class="mu">Teachers</span></div>`:''}<div><b>${subObjs().length}</b><span class="mu">${ad?'Subjects':'My subjects'}</span></div></div>
+  <button class="btn np" data-a="tab" data-v="acc">View and edit profile</button></div>`;
+}
+function dash(){
+  const V=vis(),SO=subObjs();
+  if(!SO.length)return pcard()+`<div class="card"><h2>No subjects yet</h2><p class="mu">${isAdm()?'Add subjects in the Subjects tab.':'The admin has not assigned any subject to you yet.'}</p></div>`;
+  const SL=myStu(),rows=SL.map(s=>({s,o:stat(s.prn,V)})).filter(x=>x.o.t),
+  tot=rows.reduce((a,x)=>({p:a.p+x.o.p,t:a.t+x.o.t}),{p:0,t:0}),ov=tot.t?tot.p/tot.t*100:null,
+  low=rows.filter(x=>below(x.o.pc)).sort((a,b)=>a.o.pc-b.o.pc),
+  subs=SO.map(b=>{const a=D.students.reduce((q,s)=>{const o=stat(s.prn,b.name);return{p:q.p+o.p,t:q.t+o.t}},{p:0,t:0});return[b.name,a.t?a.p/a.t*100:null]}).sort((a,b)=>(a[1]==null)-(b[1]==null)||a[1]-b[1]),
+  rk=[...rows].sort((a,b)=>b.o.pc-a.o.pc),k=Math.min(5,Math.floor(rk.length/2)),
+  top=rk.slice(0,k),bot=k?rk.slice(-k).reverse():[],
+  lt=(a)=>`<table>${a.map(x=>`<tr><td>${E(x.s.name)}<div class="mu">${E(x.s.prn)}</div></td><td style="text-align:right">${pill(x.o.pc)}</td></tr>`).join('')}</table>`,
+  nCl=D.sessions.filter(s=>V.includes(s.sub)).length,ls=subs[0]&&subs[0][1]!=null?subs[0]:null;
+  return pcard()+`<div class="kp"><div class="card"><span class="big">${SL.length}</span><span class="mu">Students</span></div>
+  <div class="card"><span class="big">${nCl}</span><span class="mu">Classes recorded</span></div>
+  <div class="card"><span class="big" style="color:var(--${ov==null?'mu':below(ov)?'rd':'gn'})">${pc(ov)}</span><span class="mu">Overall attendance</span></div>
+  <div class="card"><span class="big" style="color:var(--${low.length?'rd':'gn'})">${low.length}</span><span class="mu">Students below ${TH}%</span></div></div>
+  ${D.students.length?'':'<div class="card"><h2>Start here</h2><p class="mu">Add students in the Students tab (or load demo data), then record attendance in Mark attendance.</p></div>'}
+  <div class="card"><div class="top" style="margin:0 0 6px"><h2 style="margin:0">Attendance trend</h2><span class="seg" role="group" aria-label="Trend period"><button class="${T.g=='w'?'on1':''}" aria-pressed="${T.g=='w'}" data-a="tg" data-v="w">Weekly</button><button class="${T.g=='m'?'on1':''}" aria-pressed="${T.g=='m'}" data-a="tg" data-v="m">Monthly</button></span></div>${trend()}</div>
+  <div class="card"><h2>Attendance by subject, lowest first</h2>${ls&&below(ls[1])?`<p class="fc" style="margin:0 0 8px">Weakest: ${E(ls[0])} at ${pc(ls[1])}.</p>`:''}${subs.map(s=>`<div><div style="display:flex;justify-content:space-between"><span>${E(s[0])}</span>${pill(s[1])}</div><div class="bar"><i style="width:${s[1]||0}%;background:var(--${s[1]==null?'ln':below(s[1])?'rd':'cy'})"></i></div></div>`).join('')}<p class="mu">The amber line marks ${TH}%.</p></div>
+  <div class="card"><h2>Needs attention</h2>${low.length?`<div class="sc"><table><tr><th>Student</th><th>PRN</th><th>Overall</th><th>Weakest subject</th></tr>${low.slice(0,10).map(x=>{const w=V.map(n=>[n,stat(x.s.prn,n).pc]).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1])[0];return`<tr><td>${E(x.s.name)}</td><td>${E(x.s.prn)}</td><td>${pill(x.o.pc)}</td><td>${w?E(w[0])+' '+pc(w[1]):'–'}</td></tr>`}).join('')}</table></div>`:'<p class="mu">Nobody is below the requirement right now.</p>'}</div>
+  ${k?`<div class="two"><div class="card" style="margin:0"><h2>Top students</h2>${lt(top)}</div><div class="card" style="margin:0"><h2>Lowest attendance</h2>${lt(bot)}</div></div>`:''}`;
+}
+
+/* ---------- students / teachers ---------- */
+function stu(){
+  const L=D.students.filter(s=>!SQ||(s.name+s.prn).toLowerCase().includes(SQ.toLowerCase()));
+  return`<div class="card"><h2>Add a student</h2><div class="row2">
+  <div><label for="sn">Name</label><input id="sn"></div><div><label for="sp">PRN</label><input id="sp"></div>
+  <div><label for="sy">Year</label><select id="sy">${[1,2,3,4,5,6].map(y=>`<option>${y}</option>`).join('')}</select></div>
+  <div><label for="sb">Branch / field</label><input id="sb" list="bl" value="CSE (Data Science)"><datalist id="bl">${['CSE (Data Science)','CSE','IT','ENTC','Mechanical','Civil','Electrical'].map(b=>`<option>${b}</option>`).join('')}</datalist></div>
+  <button class="btn pri" data-a="addstu">Add student</button></div><p class="err" id="err"></p></div>
+  <div class="card"><h2>Import many students</h2><p class="mu">One student per line as <code>Name, PRN, Year, Branch</code>. Comma or tab separated, so you can copy straight from Excel. A header row is fine.</p>
+  <label for="bi">Paste here</label><textarea id="bi" rows="5" data-q="bi" placeholder="Aarav Patil, MGM23001, 3, CSE (Data Science)">${E(BT)}</textarea>
+  <div class="row2" style="margin-top:8px"><button class="btn pri" data-a="imp">Import pasted list</button><div><label for="bf">...or choose a CSV file</label><input id="bf" type="file" accept=".csv,.txt,text/csv" data-f="bfile"></div><button class="btn" data-a="sample">Download sample CSV</button></div>
+  <p class="mu" role="status" style="margin-top:8px;white-space:pre-line;${IM&&IM.bad?'color:var(--rd)':''}">${IM?E(IM.m):''}</p></div>
+  <div class="card"><div class="top" style="margin:0 0 8px"><h2 style="margin:0">All students (${D.students.length})</h2><button class="btn" data-a="demo">Load demo data</button></div>
+  <label for="sq">Search name or PRN</label><input id="sq" data-q="sq" value="${E(SQ)}" style="max-width:320px;margin-bottom:8px">
+  <div class="sc"><table><tr><th>Name</th><th>PRN</th><th>Year</th><th>Branch</th><th>Account</th><th></th></tr>${L.map(s=>{const has=D.users.some(u=>u.id==s.prn);return`<tr><td>${E(s.name)}</td><td>${E(s.prn)}</td><td>${s.year}</td><td>${E(s.branch)}</td><td class="mu">${has?'Signed up':'Not yet'}</td><td style="white-space:nowrap;text-align:right"><button class="btn sm" data-a="sv" data-v="${E(s.prn)}">Details</button> ${has?`<button class="btn sm" data-a="resetpw" data-v="${E(s.prn)}">Reset password</button> `:''}<button class="btn sm dg" data-a="delstu" data-v="${E(s.prn)}">Remove</button></td></tr>`}).join('')||'<tr><td colspan="6" class="mu">No students yet.</td></tr>'}</table></div></div>`;
+}
+function tch(){
+  const L=D.users.filter(u=>u.role=='teacher');
+  return`<div class="card"><h2>Add a teacher</h2><p class="mu">Give the teacher a username and a temporary password. Then assign subjects to them in the Subjects tab. They can change the password in their Account tab.</p>
+  <div class="row2"><div><label for="tn">Full name</label><input id="tn"></div><div><label for="tu">Username</label><input id="tu" autocomplete="off"></div>
+  <div><label for="tp">Temporary password</label><input id="tp" autocomplete="off"></div><button class="btn pri" data-a="addtch">Add teacher</button></div><p class="err" id="err"></p></div>
+  <div class="card"><h2>Teachers (${L.length})</h2><div class="sc"><table><tr><th>Name</th><th>Username</th><th>Subjects</th><th></th></tr>${L.map(u=>`<tr><td>${E(u.name)}</td><td>${E(u.id)}</td><td class="mu">${E(D.subjects.filter(s=>s.teacher==u.id).map(s=>s.name).join(', ')||'None yet')}</td><td style="white-space:nowrap;text-align:right"><button class="btn sm" data-a="resetpw" data-v="${E(u.id)}">Reset password</button> <button class="btn sm dg" data-a="deltch" data-v="${E(u.id)}">Remove</button></td></tr>`).join('')||'<tr><td colspan="4" class="mu">No teachers yet. The admin can mark every subject.</td></tr>'}</table></div></div>`;
+}
+
+/* ---------- marking ---------- */
+function mk(){
+  const sb=sobj(M.sub),L=sb?flt(M).filter(s=>applies(sb,s)):[],ex=D.sessions.find(s=>s.date==M.date&&s.sub==M.sub&&s.slot==M.slot),
+  val=p=>p in M.v?M.v[p]:ex?ex.m[p]:null;
+  return{L,ex,val}}
+function mark(){
+  const names=vis();if(!names.includes(M.sub))M.sub=names[0]||'';
+  if(!names.length)return`<div class="card"><h2>No subjects yet</h2><p class="mu">${isAdm()?'Add subjects in the Subjects tab.':'The admin has not assigned any subject to you yet.'}</p></div>`;
+  const{L,ex,val}=mk(),un=L.filter(s=>val(s.prn)==null).length,u=D.undo&&D.undo.by==me.id?D.undo:null;
+  return`<div class="card"><h2>Mark attendance</h2><div class="row2">
+  <div><label for="ms">Subject</label><select id="ms" data-f="msub">${opts(names,M.sub)}</select></div>
+  <div><label for="md">Date</label><input id="md" type="date" value="${M.date}" max="${today}" data-f="mdate"></div>
+  <div><label for="ml">Lecture / slot</label><select id="ml" data-f="mslot">${opts(SLOTS,M.slot)}</select></div>
+  <div><label for="my">Year</label><select id="my" data-f="myear">${opts(years(),M.year,'All years')}</select></div>
+  <div><label for="mb">Branch</label><select id="mb" data-f="mbranch">${opts(branches(),M.branch,'All branches')}</select></div></div>
+  ${ex?'<p class="fc">Attendance for this subject, date and slot already exists. Saving will update it.</p>':''}
+  ${u?`<p style="margin-top:10px"><button class="btn sm" data-a="undo">Undo last save (${E(u.sub)}, ${fd(u.date)}, ${E(u.slot)})</button></p>`:''}</div>
+  <div class="card"><div class="top" style="margin:0 0 8px"><h2 style="margin:0">${L.length} students &middot; <span style="color:var(--${un?'am':'gn'})">${un} unmarked</span></h2><span><button class="btn" data-a="all" data-v="1">All present</button> <button class="btn" data-a="all" data-v="0">All absent</button> <button class="btn" data-a="clr">Clear</button></span></div>
+  <p class="mu" style="margin-bottom:8px">P present &middot; A absent &middot; L leave &middot; Med medical &middot; OD on duty. Every student must be marked before saving.</p>
+  <label for="mq">Search name or PRN</label><input id="mq" data-q="mq" value="${E(M.q)}" style="max-width:320px;margin-bottom:6px">
+  <div class="sc"><table>${L.map(s=>{const v=val(s.prn);return`<tr><td>${E(s.name)}<div class="mu">${E(s.prn)}${v==null?' &middot; <span style="color:var(--am)">not marked</span>':''}</div></td><td style="text-align:right"><span class="seg" role="group" aria-label="Status for ${E(s.name)}">${[1,0,2,3,4].map(c=>`<button class="${v==c?'on'+c:''}" aria-pressed="${v==c}" aria-label="${ST[c]}" title="${ST[c]}" data-a="pm" data-p="${E(s.prn)}" data-v="${c}">${SH[c]}</button>`).join('')}</span></td></tr>`}).join('')||'<tr><td class="mu">No students match this subject and filters. Add students or check the subject\'s year and branch.</td></tr>'}</table></div>
+  <button class="btn pri" style="margin-top:12px" data-a="savemk"${L.length&&M.sub?'':' disabled'}>Save attendance</button></div>`;
+}
+function past(){
+  const V=vis();let L=D.sessions.map((s,i)=>({s,i})).filter(x=>V.includes(x.s.sub)&&(!PR.sub||x.s.sub==PR.sub)&&(!PR.from||x.s.date>=PR.from)&&(!PR.to||x.s.date<=PR.to)).sort((a,b)=>b.s.date.localeCompare(a.s.date)||String(a.s.slot).localeCompare(String(b.s.slot)));
+  const n=L.length;L=L.slice(0,150);
+  return`<div class="card"><h2>Past records</h2><div class="row2"><div><label for="pfs">Subject</label><select id="pfs" data-f="pfs">${opts(V,PR.sub,'All subjects')}</select></div>
+  <div><label for="pff">From</label><input id="pff" type="date" value="${PR.from}" data-f="pff"></div><div><label for="pft">To</label><input id="pft" type="date" value="${PR.to}" data-f="pft"></div></div></div>
+  <div class="card sc"><table><tr><th>Date</th><th>Slot</th><th>Subject</th><th>P</th><th>A</th><th>Other</th><th></th></tr>${L.map(({s,i})=>{const v=Object.values(s.m),p=v.filter(x=>x==1).length,a=v.filter(x=>x==0).length;return`<tr><td>${fd(s.date)}</td><td>${E(s.slot)}</td><td>${E(s.sub)}</td><td>${p}</td><td>${a}</td><td>${v.length-p-a}</td><td style="white-space:nowrap;text-align:right"><button class="btn sm" data-a="edit" data-v="${i}">Edit</button> <button class="btn sm dg" data-a="delses" data-v="${i}">Delete</button></td></tr>`}).join('')||'<tr><td colspan="7" class="mu">No records match.</td></tr>'}</table>${n>150?`<p class="mu" style="margin-top:8px">Showing the latest 150 of ${n}. Narrow the dates to see older ones.</p>`:''}</div>`;
+}
+
+/* ---------- reports ---------- */
+function rep(){
+  const r={from:RP.from,to:RP.to},L0=flt(RP),SO=subObjs().filter(b=>L0.some(s=>applies(b,s))),N=SO.map(b=>b.name);
+  let rows=L0.map(s=>({s,o:stat(s.prn,N,r),c:N.map(n=>stat(s.prn,n,r))}));
+  const nd=rows.filter(x=>below(x.o.pc)).length;
+  if(RP.def)rows=rows.filter(x=>below(x.o.pc)).sort((a,b)=>a.o.pc-b.o.pc);
+  const rl=RP.from||RP.to?`${RP.from?fd(RP.from):'start'} to ${RP.to?fd(RP.to):'today'}`:'All time';
+  return`<div class="card np"><div class="row2"><div><label for="ry">Year</label><select id="ry" data-f="ry">${opts(years(),RP.year,'All years')}</select></div>
+  <div><label for="rb">Branch</label><select id="rb" data-f="rb">${opts(branches(),RP.branch,'All branches')}</select></div>
+  <div><label for="rq">Search name or PRN</label><input id="rq" data-q="rq" value="${E(RP.q)}"></div>
+  <div><label for="rfrom">From</label><input id="rfrom" type="date" value="${RP.from}" data-f="rfrom"></div>
+  <div><label for="rto">To</label><input id="rto" type="date" value="${RP.to}" data-f="rto"></div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center"><span class="mu">Quick range:</span>
+  <button class="btn sm" data-a="rpre" data-v="all">All time</button><button class="btn sm" data-a="rpre" data-v="m">This month</button><button class="btn sm" data-a="rpre" data-v="30">Last 30 days</button><button class="btn sm" data-a="rpre" data-v="sem">This semester</button></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;align-items:center"><label class="ck" style="padding:0"><input type="checkbox" id="rdef" data-f="rdef"${RP.def?' checked':''}> Only defaulters (below ${TH}%)</label>
+  <button class="btn" data-a="csv">Download CSV</button><button class="btn" data-a="print">Print / save as PDF</button></div></div>
+  <div class="pr"><h2>${RP.def?'Defaulter list':'Attendance report'}</h2><p>${E(rl)} &middot; requirement ${TH}% &middot; generated ${fd(today)}${RP.year?' &middot; Year '+E(RP.year):''}${RP.branch?' &middot; '+E(RP.branch):''}</p></div>
+  <p class="mu np" style="margin-bottom:8px">${L0.length} students in this view &middot; ${nd} below ${TH}% &middot; ${E(rl)}</p>
+  <div class="card sc"><table><tr><th>Student</th>${N.map(n=>`<th>${E(n)}</th>`).join('')}<th>Overall</th></tr>${rows.map(x=>`<tr><td>${E(x.s.name)}<div class="mu">${E(x.s.prn)} &middot; Yr ${x.s.year}</div></td>${x.c.map((c,i)=>`<td>${pill(c.pc,c.t?c.p+' of '+c.t+' classes':'')}</td>`).join('')}<td>${pill(x.o.pc,x.o.t?x.o.p+' of '+x.o.t+' classes':'')}</td></tr>`).join('')||`<tr><td class="mu">${RP.def?'No defaulters in this view.':'No students to show.'}</td></tr>`}</table></div>`;
+}
+
+/* ---------- subjects / settings / account ---------- */
+function sub(){
+  const tc=D.users.filter(u=>u.role=='teacher'),tsel=(v,at)=>`<select ${at}><option value="">Unassigned (admin only)</option>${tc.map(u=>`<option value="${E(u.id)}"${u.id==v?' selected':''}>${E(u.name)}</option>`).join('')}</select>`,
+  ysel=(v,at)=>`<select ${at}><option value="">All years</option>${[1,2,3,4,5,6].map(y=>`<option${y==v?' selected':''}>${y}</option>`).join('')}</select>`;
+  return`<div class="card"><h2>Add a subject</h2><p class="mu">Choose a year and branch so only the right students appear when marking and in their own view. Leave them as "All" for a subject everyone takes.</p>
+  <div class="row2"><div><label for="ns">Subject name</label><input id="ns"></div><div><label for="nsy">Year</label>${ysel('','id="nsy"')}</div>
+  <div><label for="nsb">Branch</label><input id="nsb" list="bl2" placeholder="All branches"><datalist id="bl2">${branches().map(b=>`<option>${E(b)}</option>`).join('')}</datalist></div>
+  <div><label for="nst">Teacher</label>${tsel('','id="nst"')}</div><button class="btn pri" data-a="addsub">Add subject</button></div><p class="err" id="err"></p></div>
+  <div class="card sc"><table><tr><th>Subject</th><th>Year</th><th>Branch</th><th>Teacher</th><th>Classes</th><th></th></tr>${D.subjects.map((b,i)=>`<tr><td>${E(b.name)}</td>
+  <td style="min-width:110px">${ysel(b.year,`id="sy${i}" aria-label="Year for ${E(b.name)}" data-f="subf" data-i="${i}" data-k="year"`)}</td>
+  <td style="min-width:150px"><select id="sb${i}" aria-label="Branch for ${E(b.name)}" data-f="subf" data-i="${i}" data-k="branch">${opts([...new Set([...branches(),b.branch].filter(Boolean))],b.branch,'All branches')}</select></td>
+  <td style="min-width:170px">${tsel(b.teacher,`id="st${i}" aria-label="Teacher for ${E(b.name)}" data-f="subf" data-i="${i}" data-k="teacher"`)}</td>
+  <td class="mu">${D.sessions.filter(s=>s.sub==b.name).length}</td><td style="text-align:right"><button class="btn sm dg" data-a="delsub" data-v="${E(b.name)}">Remove</button></td></tr>`).join('')||'<tr><td colspan="6" class="mu">No subjects yet.</td></tr>'}</table></div>`;
+}
+function set(){
+  const m=D.settings.map,ms=(c)=>`<div><label for="mp${c}">${ST[c]} counts as</label><select id="mp${c}" data-f="map" data-k="${c}">${[['p','Present'],['a','Absent'],['x','Excused (not counted)']].map(o=>`<option value="${o[0]}"${m[c]==o[0]?' selected':''}>${o[1]}</option>`).join('')}</select></div>`;
+  return`<div class="card"><h2>Attendance rules</h2><div class="row2"><div><label for="th">Required attendance</label><select id="th" data-f="th">${[60,65,70,75,80,85,90].map(v=>`<option${v==TH?' selected':''} value="${v}">${v}%</option>`).join('')}</select></div>
+  ${[2,3,4].map(ms).join('')}<div><label for="sem">Semester start date</label><input id="sem" type="date" value="${D.settings.sem||''}" data-f="sem"></div></div>
+  <p class="mu" style="margin-top:10px">Excused classes are left out of the total, so they neither help nor hurt a student's percentage. The semester date powers the "This semester" range in Reports.</p></div>
+  <div class="card"><h2>Backup and restore</h2><p class="mu">Your data lives only in this browser. Download a backup regularly, and restore it here or on another device. The backup file includes login hashes, so keep it private.</p>
+  <div class="row2"><button class="btn pri" data-a="bkp">Download backup (JSON)</button><div><label for="rf">Restore from a backup file</label><input id="rf" type="file" accept=".json,application/json" data-f="rfile"></div></div></div>
+  <div class="card"><h2>Danger zone</h2><p class="mu" style="margin-bottom:10px">This deletes every student, teacher, subject, attendance record and account, including your own admin login.</p><button class="btn dg" data-a="wipe">Clear all data</button></div>`;
+}
+function acc(){
+  const u=D.users.find(x=>x.id==me.id)||{},stu=me.role=='student',st=stu?D.students.find(s=>s.prn==me.id):null,src=st||u,
+  o=stu&&st?stat(st.prn,mySubs(st)):null,rl=me.role=='admin'?'Admin':me.role=='teacher'?'Teacher':'Student';
+  const rows=stu?[['PRN',me.id],['Year',st?st.year:'–'],['Branch',st?st.branch:'–'],['Overall attendance',o?pc(o.pc):'–'],['Account created',fd(u.created)||'–']]
+   :me.role=='admin'?[['Role','Admin'],['Students',D.students.length],['Teachers',D.users.filter(x=>x.role=='teacher').length],['Subjects',D.subjects.length],['Account created',fd(u.created)||'–']]
+   :[['Role','Teacher'],['Subjects assigned',D.subjects.filter(b=>b.teacher==me.id).map(b=>b.name).join(', ')||'None yet'],['Account created',fd(u.created)||'–']];
+  return`<div class="two"><div class="card pc" style="display:block;margin:0"><div class="pc"><span class="av lg">${E(ini(me.name))}</span><div class="info"><h2 style="margin:0">${E(me.name)}</h2><p class="mu">${rl} &middot; @${E(me.id)}</p></div></div>
+  <dl class="kv">${rows.map(r=>`<dt>${r[0]}</dt><dd>${E(r[1])}</dd>`).join('')}</dl>${stu?'<p class="mu">Year and branch are set by your admin.</p>':''}</div>
+  <div class="card" style="margin:0"><h2>Edit profile</h2>
+  <label for="pf0">Full name</label><input id="pf0" value="${E(me.name)}" autocomplete="name">
+  <label for="pf1">Username${stu?' (your PRN, set by the admin)':''}</label><input id="pf1" value="${E(me.id)}" autocomplete="off"${stu?' disabled':''}>
+  <label for="pf2">Email (optional)</label><input id="pf2" type="email" value="${E(src.email||'')}" autocomplete="email">
+  <label for="pf3">Phone (optional)</label><input id="pf3" type="tel" value="${E(src.phone||'')}" autocomplete="tel">
+  <p class="err" id="perr" role="alert"></p><button class="btn pri" data-a="saveprof">Save profile</button></div></div>
+  <div class="card" style="max-width:460px;margin-top:14px"><h2>Change password</h2>
+  <label for="cp0">Current password</label><input id="cp0" type="password" autocomplete="current-password">
+  <label for="cp1">New password (at least 6 characters)</label><input id="cp1" type="password" autocomplete="new-password">
+  <label for="cp2">Repeat new password</label><input id="cp2" type="password" autocomplete="new-password">
+  <p class="err" id="err" role="alert"></p><button class="btn pri" data-a="chpw">Change password</button></div>`;
+}
+
+/* ---------- student view ---------- */
+const mySubs=s=>D.subjects.filter(b=>applies(b,s)||stat(s.prn,b.name).t>0).map(b=>b.name);
+function advice(x){
+  if(!x.t)return'No classes recorded yet.';const q=TH/100;
+  if(!below(x.pc)){const k=Math.floor(x.p/q-x.t+1e-9);return k>0?`You can miss ${k} more class${k>1?'es':''} and stay above ${TH}%.`:`Do not miss the next class to stay above ${TH}%.`}
+  return`Attend the next ${Math.ceil((q*x.t-x.p)/(1-q)-1e-9)} classes in a row to reach ${TH}%.`}
+function stuView(s,adm){
+  const names=mySubs(s),o=stat(s.prn,names),bad=names.map(n=>[n,stat(s.prn,n)]).filter(a=>below(a[1].pc)),sel=FC.sub&&names.includes(FC.sub)?FC.sub:'',fo=stat(s.prn,sel||names),n=Math.max(1,Math.min(60,Math.round(+FC.n)||1));
+  return`${!adm&&(below(o.pc)||bad.length)?`<div class="warn" role="status"><b>Low attendance warning.</b> ${below(o.pc)?`Your overall attendance is ${pc(o.pc)}, below the ${TH}% requirement. `:''}${bad.length?`Below ${TH}% in: ${bad.map(a=>E(a[0])+' ('+pc(a[1].pc)+')').join(', ')}.`:''}</div>`:''}
+  <div class="card"><h2>${E(s.name)}</h2><p class="mu">PRN ${E(s.prn)} &middot; Year ${s.year} &middot; ${E(s.branch)}</p>
+  <div style="display:flex;align-items:baseline;gap:12px;margin-top:10px;flex-wrap:wrap"><span class="big" style="font-size:48px;color:var(--${o.pc==null?'mu':below(o.pc)?'rd':'gn'})">${pc(o.pc)}</span><span class="mu">overall &middot; ${o.p} present of ${o.t} classes${o.x?' &middot; '+o.x+' excused':''}</span></div></div>
+  <div class="card"><h2>What if?</h2><div class="row2"><div><label for="fs">Subject</label><select id="fs" data-f="fcs">${opts(names,sel,'All subjects')}</select></div><div><label for="fn">Number of classes</label><input id="fn" type="number" min="1" max="60" value="${E(FC.n)}" data-q="fcn"></div></div>
+  ${fo.t?`<div class="fc">If ${adm?'they':'you'} miss the next ${n}: ${pill(fo.p/(fo.t+n)*100)} <span class="mu">(now ${pc(fo.pc)})</span></div><div class="fc">If ${adm?'they':'you'} attend the next ${n}: ${pill((fo.p+n)/(fo.t+n)*100)}</div>`:'<p class="mu" style="margin-top:8px">No classes recorded yet.</p>'}</div>
+  ${heat(s.prn)}
+  <div class="sg">${names.map(nm=>{const x=stat(s.prn,nm);return`<div class="card" style="margin:0"><div style="display:flex;justify-content:space-between"><h3>${E(nm)}</h3>${pill(x.pc)}</div><div class="bar"><i style="width:${x.pc||0}%;background:var(--${x.pc==null?'ln':below(x.pc)?'rd':'cy'})"></i></div><span class="mu">${x.p} of ${x.t} classes${x.x?' &middot; '+x.x+' excused':''}</span><p class="fc">${advice(x)}</p></div>`}).join('')}</div>`;
+}
+function my(){
+  const s=D.students.find(s=>s.prn==me.id);
+  if(!s)return'<div class="card"><h2>Your record was removed</h2><p class="mu">Ask your admin to add your PRN again.</p></div>';
+  return stuView(s,false)}
+function histT(prn){
+  const r=D.sessions.filter(s=>prn in s.m).sort((a,b)=>b.date.localeCompare(a.date)||String(a.slot).localeCompare(String(b.slot)));
+  return`<div class="card" style="margin-top:14px"><h2>Class history</h2><div class="sc"><table><tr><th>Date</th><th>Slot</th><th>Subject</th><th>Status</th></tr>${r.map(s=>{const v=s.m[prn],e=eff(v);return`<tr><td>${fd(s.date)}</td><td>${E(s.slot)}</td><td>${E(s.sub)}</td><td><span class="pill ${e==1?'lo':e==0?'hi':'md'}">${ST[v]||'?'}</span>${v!=1&&v!=0?` <span class="mu">counts as ${e==1?'present':e==0?'absent':'excused'}</span>`:''}</td></tr>`}).join('')||'<tr><td colspan="4" class="mu">No classes recorded yet.</td></tr>'}</table></div></div>`;
+}
+function hist(){return histT(me.id)}
+function sv(){
+  const s=D.students.find(s=>s.prn==SV);if(!s)return'<div class="card"><p class="mu">Student not found.</p></div>';
+  return`<p style="margin-bottom:12px"><button class="btn" data-a="tab" data-v="stu">Back to students</button></p>`+stuView(s,true)+histT(s.prn)}
+
+/* ---------- actions ---------- */
+function demo(){
+  let seed=5;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+  const N=['Aarav Patil','Isha Deshmukh','Rohan Jadhav','Sneha Kulkarni','Kunal Shinde','Pooja More','Omkar Pawar','Riya Joshi','Yash Patil','Neha Jadhav','Tejas More','Sakshi Shinde'];
+  N.forEach((n,i)=>{const prn='MGM23'+String(i+1).padStart(3,'0');if(!D.students.some(s=>s.prn==prn))D.students.push({name:n,prn,year:3,branch:'CSE (Data Science)',b:.55+rnd()*.42})});
+  D.subjects.forEach((sb,si)=>{const slot=SLOTS[si%4];for(let d=0;d<24;d++){const dt=ld(new Date(Date.now()-(d*2+1)*864e5)),m={};
+    D.students.forEach(s=>{let v=rnd()<(s.b||.8)?1:0;const x=rnd();if(x<.03)v=2;else if(x<.05)v=3;else if(x<.08)v=4;m[s.prn]=v});
+    if(!D.sessions.some(x=>x.date==dt&&x.sub==sb.name&&x.slot==slot))D.sessions.push({date:dt,sub:sb.name,slot,m})}});
+  save();R();toast('Demo data loaded. Sign up with PRN MGM23001 to see a student view.')}
+function csv(){
+  const L=flt(RP),r={from:RP.from,to:RP.to},N=subObjs().filter(b=>L.some(s=>applies(b,s))).map(b=>b.name);
+  let rows=L.map(s=>({s,o:stat(s.prn,N,r),c:N.map(n=>stat(s.prn,n,r).pc)}));if(RP.def)rows=rows.filter(x=>below(x.o.pc));
+  const out=[['Name','PRN','Year','Branch',...N,'Overall'],...rows.map(x=>[x.s.name,x.s.prn,x.s.year,x.s.branch,...x.c.map(pc),pc(x.o.pc)])];
+  dl('attendance-report.csv','﻿'+out.map(r=>r.map(cell).join(',')).join('\n'),'text/csv')}
+function parseCSV(t){
+  t=t.replace(/^﻿/,'');const first=t.split(/\r?\n/).find(l=>l.trim())||'',dl=first.includes('\t')?'\t':',',rows=[];let row=[],c='',q=false;
+  for(let i=0;i<t.length;i++){const ch=t[i];
+    if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=ch}
+    else if(ch=='"')q=true;else if(ch==dl){row.push(c);c=''}
+    else if(ch=='\n'||ch=='\r'){if(ch=='\r'&&t[i+1]=='\n')i++;row.push(c);c='';rows.push(row);row=[]}else c+=ch}
+  row.push(c);rows.push(row);return rows.map(r=>r.map(x=>x.trim())).filter(r=>r.some(x=>x))}
+function importCSV(t){
+  const rows=parseCSV(t);if(rows.length&&(/^name$/i.test(rows[0][0])||/^prn$/i.test(rows[0][1]||'')))rows.shift();
+  let add=0,dup=0;const bad=[],seen=new Set(D.students.map(s=>s.prn.toLowerCase()));
+  rows.forEach((r,i)=>{const[n,p,y,b]=r,ln='Row '+(i+1)+': ';
+    if(!n||!p)return bad.push(ln+'name and PRN are required');
+    const yr=+y;if(!Number.isInteger(yr)||yr<1||yr>6)return bad.push(ln+'year must be 1 to 6 ('+p+')');
+    if(!b)return bad.push(ln+'branch is missing ('+p+')');
+    if(D.users.some(u=>u.role!='student'&&u.id.toLowerCase()==p.toLowerCase()))return bad.push(ln+p+' clashes with a staff username');
+    if(seen.has(p.toLowerCase()))return dup++;
+    seen.add(p.toLowerCase());D.students.push({name:n,prn:p,year:yr,branch:b});add++});
+  save();BT=bad.length?BT:'';
+  IM={bad:!add&&bad.length>0,m:`Imported ${add} student${add==1?'':'s'}. Skipped ${dup} already in the list.`+(bad.length?`\n${bad.length} row${bad.length>1?'s':''} had problems:\n`+bad.slice(0,5).join('\n')+(bad.length>5?'\n...and '+(bad.length-5)+' more':''):'')};
+  R()}
+const act={
+  mode:v=>{A.mode=v;R()},login,signup,
+  logout:()=>{ANIM=true;me=null;A={mode:'login',role:'student'};sessionStorage.removeItem('me');R()},
+  tab:v=>{tab=v;ANIM=true;R()},
+  theme:()=>{theme=theme=='dark'?'light':'dark';try{localStorage.setItem(KT,theme)}catch(e){}applyTheme();R()},
+  tg:v=>{T.g=v;R()},
+  sv:v=>{SV=v;tab='sv';ANIM=true;R()},
+  addstu:()=>{const n=$('#sn').value.trim(),p=$('#sp').value.trim(),y=+$('#sy').value,b=$('#sb').value.trim();
+   if(!n||!p||!b)return err('Enter name, PRN and branch.');
+   if(D.students.some(s=>s.prn.toLowerCase()==p.toLowerCase()))return err('This PRN is already in the list.');
+   if(D.users.some(u=>u.role!='student'&&u.id.toLowerCase()==p.toLowerCase()))return err('This PRN clashes with a staff username.');
+   D.students.push({name:n,prn:p,year:y,branch:b});save();R();toast('Student added')},
+  imp:()=>{if(!BT.trim()){IM={bad:true,m:'Paste some rows first, or choose a CSV file.'};return R()}importCSV(BT)},
+  sample:()=>dl('students-sample.csv','Name,PRN,Year,Branch\nAarav Patil,MGM23001,3,CSE (Data Science)\nIsha Deshmukh,MGM23002,3,CSE (Data Science)\nRohan Jadhav,MGM23003,2,IT\n','text/csv'),
+  delstu:v=>{if(!confirm('Remove this student and their attendance?'))return;D.students=D.students.filter(s=>s.prn!=v);D.users=D.users.filter(u=>u.id!=v);D.sessions.forEach(s=>delete s.m[v]);D.sessions=D.sessions.filter(s=>Object.keys(s.m).length);D.undo=null;save();R()},
+  demo,
+  wipe:()=>{if(!confirm('Delete all students, teachers, subjects, attendance and accounts, including your own admin login?'))return;localStorage.removeItem(K);sessionStorage.clear();location.reload()},
+  resetpw:async v=>{const u=D.users.find(u=>u.id==v);if(!u)return;const p=prompt('New temporary password for '+u.name+' (at least 6 characters):');if(p==null)return;
+   if(p.length<6)return toast('Password must be at least 6 characters',1);u.h=await hash(p);save();toast('Password reset. Share the new password with them.')},
+  addtch:async()=>{const n=$('#tn').value.trim(),u=$('#tu').value.trim(),p=$('#tp').value;
+   if(!n||!u||p.length<6)return err('Enter a name, a username and a password of at least 6 characters.');
+   if(staffIdTaken(u))return err('This username is already used by another account or student PRN.');
+   D.users.push({id:u,role:'teacher',name:n,h:await hash(p),created:today});save();R();toast('Teacher added')},
+  deltch:v=>{if(!confirm('Remove this teacher? Their subjects become admin-only.'))return;D.users=D.users.filter(u=>u.id!=v);D.subjects.forEach(s=>{if(s.teacher==v)s.teacher=''});if(D.undo&&D.undo.by==v)D.undo=null;save();R()},
+  pm:(v,e)=>{M.v[e.dataset.p]=+v;R()},
+  all:v=>{mk().L.forEach(s=>M.v[s.prn]=+v);R()},
+  clr:()=>{mk().L.forEach(s=>M.v[s.prn]=null);R()},
+  savemk:()=>{const{L,ex,val}=mk(),un=L.filter(s=>val(s.prn)==null).length;
+   if(!L.length)return;if(un)return toast(`${un} student${un>1?'s are':' is'} still unmarked`,1);
+   const prev=ex?{...ex.m}:null;let s=ex;if(!s){s={date:M.date,sub:M.sub,slot:M.slot,m:{}};D.sessions.push(s)}
+   L.forEach(st=>s.m[st.prn]=val(st.prn));D.undo={date:M.date,sub:M.sub,slot:M.slot,prev,by:me.id};M.v={};save();R();toast('Attendance saved')},
+  undo:()=>{const u=D.undo;if(!u)return;const i=D.sessions.findIndex(s=>s.date==u.date&&s.sub==u.sub&&s.slot==u.slot);
+   if(i>=0){if(u.prev)D.sessions[i].m=u.prev;else D.sessions.splice(i,1)}D.undo=null;M.v={};save();R();toast('Last save undone')},
+  edit:v=>{const s=D.sessions[+v];if(!s)return;M.date=s.date;M.sub=s.sub;M.slot=s.slot;M.v={};M.q='';tab='mark';ANIM=true;R()},
+  delses:v=>{if(!confirm('Delete this attendance record?'))return;D.sessions.splice(+v,1);D.undo=null;save();R()},
+  rpre:v=>{if(v=='all'){RP.from='';RP.to=''}else if(v=='m'){RP.from=today.slice(0,8)+'01';RP.to=''}
+   else if(v=='30'){RP.from=ld(new Date(Date.now()-29*864e5));RP.to=''}
+   else{if(!D.settings.sem)return toast('Admin: set the semester start date in Settings first',1);RP.from=D.settings.sem;RP.to=''}R()},
+  csv,print:()=>window.print(),
+  addsub:()=>{const n=$('#ns').value.trim();if(!n)return err('Enter a subject name.');if(D.subjects.some(x=>x.name.toLowerCase()==n.toLowerCase()))return err('This subject already exists.');
+   D.subjects.push({name:n,year:$('#nsy').value,branch:$('#nsb').value.trim(),teacher:$('#nst').value});save();R()},
+  delsub:v=>{if(D.sessions.some(s=>s.sub==v)&&!confirm('This subject has recorded classes. Remove it and its attendance?'))return;D.subjects=D.subjects.filter(x=>x.name!=v);D.sessions=D.sessions.filter(s=>s.sub!=v);M.sub='';D.undo=null;save();R()},
+  saveprof:()=>{
+   const u=D.users.find(x=>x.id==me.id),stu=me.role=='student',st=stu?D.students.find(s=>s.prn==me.id):null,E_=id=>$('#'+id).value.trim(),
+   nm=E_('pf0'),un=E_('pf1'),em=E_('pf2'),ph=E_('pf3'),pe=m=>err(m,'perr');
+   if(!u)return pe('Account not found.');if(!nm)return pe('Enter your name.');
+   if(em&&!/^\S+@\S+\.\S+$/.test(em))return pe('That email address does not look right.');
+   if(ph&&!(/^[0-9+\-\s()]+$/.test(ph)&&ph.replace(/\D/g,'').length>=7&&ph.replace(/\D/g,'').length<=15))return pe('Enter a valid phone number, 7 to 15 digits.');
+   if(!stu&&un!=me.id){if(!un)return pe('Enter a username.');
+    if(D.users.some(x=>x!==u&&x.id.toLowerCase()==un.toLowerCase())||D.students.some(s=>s.prn.toLowerCase()==un.toLowerCase()))return pe('This username is already used.');
+    D.subjects.forEach(b=>{if(b.teacher==me.id)b.teacher=un});if(D.undo&&D.undo.by==me.id)D.undo.by=un;u.id=un;me.id=un}
+   u.name=nm;me.name=nm;if(st){st.name=nm;st.email=em;st.phone=ph}else{u.email=em;u.phone=ph}
+   sessionStorage.setItem('me',JSON.stringify(me));save();R();toast('Profile saved')},
+  chpw:async()=>{const u=D.users.find(x=>x.id==me.id),a=$('#cp0').value,b=$('#cp1').value,c=$('#cp2').value;
+   if(!u)return err('Account not found.');if(await hash(a)!=u.h)return err('Current password is wrong.');
+   if(b.length<6)return err('New password must be at least 6 characters.');if(b!=c)return err('The two new passwords do not match.');
+   u.h=await hash(b);save();R();toast('Password changed')},
+  bkp:()=>dl('attendance-backup-'+today+'.json',JSON.stringify(D,null,1),'application/json')};
+const ch={
+  role:v=>A.role=v,ry:v=>RP.year=v,rb:v=>RP.branch=v,rfrom:v=>RP.from=v,rto:v=>RP.to=v,rdef:(v,t)=>RP.def=t.checked,
+  msub:v=>{M.sub=v;M.v={}},mdate:v=>{if(v){M.date=v;M.v={}}},mslot:v=>{M.slot=v;M.v={}},myear:v=>M.year=v,mbranch:v=>M.branch=v,
+  fcs:v=>FC.sub=v,pfs:v=>PR.sub=v,pff:v=>PR.from=v,pft:v=>PR.to=v,
+  th:v=>{D.settings.th=+v;setTH();save()},sem:v=>{D.settings.sem=v;save()},map:(v,t)=>{D.settings.map[t.dataset.k]=v;save()},
+  subf:(v,t)=>{D.subjects[+t.dataset.i][t.dataset.k]=v;save()}};
+const inp={mq:v=>M.q=v,rq:v=>RP.q=v,sq:v=>SQ=v,fcn:v=>FC.n=v,bi:v=>{BT=v;return true}};
+const files={
+  bfile:f=>f.text().then(importCSV),
+  rfile:f=>f.text().then(t=>{let d;try{d=JSON.parse(t)}catch(e){return toast('That file is not a valid backup',1)}
+   if(!d||!Array.isArray(d.students)||!Array.isArray(d.sessions)||!Array.isArray(d.users))return toast('That file is not an attendance backup',1);
+   if(!confirm('Replace ALL current data with this backup? You will be logged out.'))return;
+   D=norm(d);setTH();save();me=null;sessionStorage.removeItem('me');R();toast('Backup restored. Log in again.')})};
+$('#app').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&act[b.dataset.a])act[b.dataset.a](b.dataset.v,b)});
+$('#app').addEventListener('change',e=>{const t=e.target,f=t.dataset.f;
+  if(t.type=='file'){const fl=t.files[0];if(fl&&files[f])files[f](fl);t.value='';return}
+  if(f&&ch[f]){ch[f](t.value,t);R()}});
+$('#app').addEventListener('input',e=>{const k=e.target.dataset.q;if(k&&inp[k]&&inp[k](e.target.value)!==true)R()});
+$('#app').addEventListener('keydown',e=>{if(e.key=='Enter'&&!me&&e.target.tagName=='INPUT')act[A.mode]()});
+R();
+</script>
+</body>
+</html>
