@@ -20,7 +20,7 @@
 <label>Email<input id="email" type="email" autocomplete="email" required></label>
 <label>Password<input id="password" type="password" autocomplete="current-password" minlength="8" required></label>
 <label>Full name (used for sign-up)<input id="fullName" autocomplete="name" placeholder="Your full name"></label>
-<div class="row" style="align-self:end"><button type="submit">Sign in</button><button id="signupBtn" class="secondary" type="button">Create account</button></div>
+<div class="row" style="align-self:end"><button type="submit">Sign in</button><button id="signupBtn" class="secondary" type="button">Create account</button><button id="resetBtn" class="secondary" type="button">Reset password</button></div>
 </form>
 </section>
 <section id="appPanel" class="hidden">
@@ -92,6 +92,7 @@ $('authForm').addEventListener('submit',async e=>{e.preventDefault();msg('Signin
  const {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;
  currentUser=data.user;await loadProfile();showSignedIn();msg('Signed in successfully. Cloud data is loaded from Supabase.','ok');
 }catch(e){msg(errorText(e),'error');}});
+$('resetBtn').addEventListener('click',async()=>{try{const email=$('email').value.trim();if(!email)throw new Error('Enter your email first, then click Reset password.');const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});if(error)throw error;msg('Password reset email requested. Check your inbox and spam folder.','ok');}catch(e){msg(errorText(e),'error');}});
 $('signupBtn').addEventListener('click',async()=>{msg('Creating account…');try{
  const email=$('email').value.trim(),password=$('password').value,full_name=$('fullName').value.trim();
  if(!email||password.length<8)throw new Error('Enter an email and a password with at least 8 characters.');
