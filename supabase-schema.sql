@@ -112,18 +112,15 @@ alter table public.subjects enable row level security;
 alter table public.attendance_sessions enable row level security;
 alter table public.attendance_records enable row level security;
 
-drop policy if exists "profiles_read_self_or_admin" on public.profiles;
 create policy "profiles_read_self_or_admin" on public.profiles
 for select to authenticated
 using (id = (select auth.uid()) or public.attendx_is_admin());
 
-drop policy if exists "profiles_admin_update" on public.profiles;
 create policy "profiles_admin_update" on public.profiles
 for update to authenticated
 using (public.attendx_is_admin())
 with check (public.attendx_is_admin());
 
-drop policy if exists "students_read_scoped" on public.students;
 create policy "students_read_scoped" on public.students
 for select to authenticated
 using (
@@ -132,13 +129,11 @@ using (
   or (public.current_attendx_role() = 'teacher' and public.attendx_teacher_can_access_student(id))
 );
 
-drop policy if exists "students_admin_manage" on public.students;
 create policy "students_admin_manage" on public.students
 for all to authenticated
 using (public.attendx_is_admin())
 with check (public.attendx_is_admin());
 
-drop policy if exists "subjects_read_scoped" on public.subjects;
 create policy "subjects_read_scoped" on public.subjects
 for select to authenticated
 using (
@@ -147,13 +142,11 @@ using (
   or exists (select 1 from public.students st where st.user_id = (select auth.uid()) and (subjects.year = '' or subjects.year = st.year) and (subjects.branch = '' or lower(subjects.branch) = lower(st.branch)))
 );
 
-drop policy if exists "subjects_admin_manage" on public.subjects;
 create policy "subjects_admin_manage" on public.subjects
 for all to authenticated
 using (public.attendx_is_admin())
 with check (public.attendx_is_admin());
 
-drop policy if exists "sessions_read_scoped" on public.attendance_sessions;
 create policy "sessions_read_scoped" on public.attendance_sessions
 for select to authenticated
 using (
@@ -166,7 +159,6 @@ using (
   )
 );
 
-drop policy if exists "sessions_admin_or_assigned_teacher_insert" on public.attendance_sessions;
 create policy "sessions_admin_or_assigned_teacher_insert" on public.attendance_sessions
 for insert to authenticated
 with check (
@@ -174,18 +166,15 @@ with check (
   or (created_by = (select auth.uid()) and public.attendx_teacher_has_subject(subject_id))
 );
 
-drop policy if exists "sessions_admin_or_assigned_teacher_update" on public.attendance_sessions;
 create policy "sessions_admin_or_assigned_teacher_update" on public.attendance_sessions
 for update to authenticated
 using (public.attendx_is_admin() or public.attendx_teacher_has_subject(subject_id))
 with check (public.attendx_is_admin() or public.attendx_teacher_has_subject(subject_id));
 
-drop policy if exists "sessions_admin_or_assigned_teacher_delete" on public.attendance_sessions;
 create policy "sessions_admin_or_assigned_teacher_delete" on public.attendance_sessions
 for delete to authenticated
 using (public.attendx_is_admin() or public.attendx_teacher_has_subject(subject_id));
 
-drop policy if exists "records_read_scoped" on public.attendance_records;
 create policy "records_read_scoped" on public.attendance_records
 for select to authenticated
 using (
@@ -194,7 +183,6 @@ using (
   or exists (select 1 from public.students st where st.id = student_id and st.user_id = (select auth.uid()))
 );
 
-drop policy if exists "records_admin_or_assigned_teacher_insert" on public.attendance_records;
 create policy "records_admin_or_assigned_teacher_insert" on public.attendance_records
 for insert to authenticated
 with check (
@@ -205,7 +193,6 @@ with check (
   )
 );
 
-drop policy if exists "records_admin_or_assigned_teacher_update" on public.attendance_records;
 create policy "records_admin_or_assigned_teacher_update" on public.attendance_records
 for update to authenticated
 using (
@@ -223,7 +210,6 @@ with check (
   )
 );
 
-drop policy if exists "records_admin_or_assigned_teacher_delete" on public.attendance_records;
 create policy "records_admin_or_assigned_teacher_delete" on public.attendance_records
 for delete to authenticated
 using (
@@ -250,7 +236,6 @@ begin
 end;
 $$;
 
-drop trigger if exists attendx_auth_user_created on auth.users;
 create trigger attendx_auth_user_created
 after insert on auth.users
 for each row execute procedure public.attendx_create_profile();
