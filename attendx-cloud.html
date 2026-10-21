@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AttendX Cloud | Aditya Palode</title>
+<meta name="description" content="AttendX Cloud attendance management with secure Supabase authentication and role-based access.">
+<style>
+:root{color-scheme:dark;--bg:#080b13;--panel:#111827;--line:#263247;--text:#eef4ff;--muted:#a4b2c7;--cyan:#63e6e2;--violet:#a78bfa;--red:#fb7185;--green:#86efac}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#172554 0,transparent 38%),radial-gradient(ellipse at 90% 15%,#312e81 0,transparent 32%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}a{color:var(--cyan)}header{display:flex;align-items:center;justify-content:space-between;padding:18px clamp(16px,4vw,52px);border-bottom:1px solid #ffffff17;backdrop-filter:blur(14px);position:sticky;top:0;background:#080b13dd;z-index:5}.brand{font-weight:850;letter-spacing:.08em}.brand span{color:var(--cyan)}header nav{display:flex;gap:18px;flex-wrap:wrap}header nav a{text-decoration:none;color:var(--muted);font-size:13px}.wrap{width:min(1100px,calc(100% - 28px));margin:34px auto 70px}.hero{padding:24px 0 26px}.eyebrow{color:var(--cyan);font-size:12px;letter-spacing:.2em;text-transform:uppercase}.hero h1{font-size:clamp(36px,7vw,64px);line-height:1.03;margin:12px 0}.hero h1 span{color:var(--cyan)}.muted{color:var(--muted)}.panel{background:linear-gradient(145deg,#121b2cfa,#0e1421f5);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 18px 70px #0004;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.stack{display:grid;gap:12px}label{display:grid;gap:6px;color:var(--muted);font-size:13px}input,select,textarea{width:100%;padding:12px 13px;border:1px solid #34445d;border-radius:10px;background:#080f1d;color:var(--text);font:inherit}button{border:0;border-radius:10px;padding:11px 15px;background:linear-gradient(100deg,#5eead4,#a5f3fc);color:#07111b;font-weight:750;cursor:pointer}button.secondary{background:#1b2940;color:var(--text);border:1px solid #33445f}button.danger{background:#4a1e2a;color:#fecdd3;border:1px solid #7f1d1d}.notice{border-radius:12px;padding:12px 14px;background:#142238;color:var(--muted);border:1px solid #30415b;white-space:pre-wrap}.notice.error{background:#351923;color:#fecdd3;border-color:#7f1d1d}.notice.ok{background:#102b25;color:#bbf7d0;border-color:#166534}.hidden{display:none!important}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tabs button.active{outline:2px solid var(--cyan)}.metric{font-size:28px;font-weight:800}.pill{font-size:11px;letter-spacing:.08em;border:1px solid #3c5870;color:var(--cyan);padding:4px 8px;border-radius:999px;text-transform:uppercase}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid #263247}th{color:var(--cyan)}.tablewrap{overflow:auto}footer{text-align:center;color:#7e8da5;padding:24px;border-top:1px solid #ffffff17;font-size:12px}.small{font-size:12px}.student-row{display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #263247}@media(max-width:600px){header{align-items:flex-start;gap:10px;flex-direction:column}.panel{padding:16px}.student-row{grid-template-columns:1fr 110px}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="index.html" style="text-decoration:none;color:inherit">AP<span> / ATTENDX</span></a><nav><a href="index.html">Portfolio</a><a href="projects.html">Projects</a><a href="attendance.html">Legacy app</a></nav></header>
+<main class="wrap">
+<section class="hero"><div class="eyebrow">Cloud attendance workspace</div><h1>AttendX <span>Cloud.</span></h1><p class="muted">Secure sign-in · Role-based access · Shared cloud records across devices</p></section>
+<div id="banner" class="notice">Connecting to Supabase…</div>
+<section id="authPanel" class="panel">
+<h2>Sign in or create your account</h2><p class="muted small">New accounts start as Student. An administrator must assign elevated roles securely.</p>
+<form id="authForm" class="grid">
+<label>Email<input id="email" type="email" autocomplete="email" required></label>
+<label>Password<input id="password" type="password" autocomplete="current-password" minlength="8" required></label>
+<label>Full name (used for sign-up)<input id="fullName" autocomplete="name" placeholder="Your full name"></label>
+<div class="row" style="align-self:end"><button type="submit">Sign in</button><button id="signupBtn" class="secondary" type="button">Create account</button></div>
+</form>
+</section>
+<section id="appPanel" class="hidden">
+<div class="panel row" style="justify-content:space-between"><div><div class="eyebrow">Signed in</div><h2 id="welcome" style="margin:4px 0">AttendX user</h2><span id="rolePill" class="pill">student</span><p id="userEmail" class="muted small"></p></div><button id="logoutBtn" class="secondary">Sign out</button></div>
+<div id="roleNotice" class="notice"></div>
+<div id="adminPanel" class="hidden">
+<div class="tabs"><button class="secondary active" data-tab="studentsTab">Students</button><button class="secondary" data-tab="subjectsTab">Subjects & Teachers</button><button class="secondary" data-tab="accountsTab">Accounts</button></div>
+<section id="studentsTab" class="panel"><h2>Register student</h2><form id="studentForm" class="grid"><label>Student ID / Roll No.<input id="studentCode" required></label><label>Full name<input id="studentName" required></label><label>Year / Class<input id="studentYear" placeholder="e.g. FY"></label><label>Branch<input id="studentBranch" placeholder="e.g. CSE-DS"></label><button type="submit">Add student</button></form><h3>Students in cloud</h3><div id="studentsTable" class="tablewrap muted">Loading…</div></section>
+<section id="subjectsTab" class="panel hidden"><h2>Create subject and assign teacher</h2><form id="subjectForm" class="grid"><label>Subject name<input id="subjectName" required></label><label>Year / Class<input id="subjectYear" placeholder="e.g. FY"></label><label>Branch<input id="subjectBranch" placeholder="e.g. CSE-DS"></label><label>Teacher account<select id="teacherSelect" required><option value="">Load accounts…</option></select></label><button type="submit">Create subject</button></form><h3>Subjects</h3><div id="subjectsTable" class="tablewrap muted">Loading…</div></section>
+<section id="accountsTab" class="panel hidden"><h2>Registered accounts</h2><p class="muted small">Promote an account only after verifying it belongs to you or a trusted staff member. Role changes are done in Supabase SQL Editor, not from public sign-up.</p><div id="accountsTable" class="tablewrap muted">Loading…</div></section>
+</div>
+<div id="teacherPanel" class="hidden">
+<section class="panel"><h2>Take attendance</h2><form id="sessionForm" class="grid"><label>Subject<select id="sessionSubject" required><option value="">Load assigned subjects…</option></select></label><label>Date<input id="sessionDate" type="date" required></label><label>Lecture / Slot<input id="sessionSlot" value="Lecture 1" required></label><button type="submit">Load class list</button></form><div id="roster" class="stack"></div><button id="saveAttendance" class="hidden">Save attendance to cloud</button></section>
+</div>
+<div id="studentPanel" class="hidden"><section class="panel"><h2>My attendance</h2><button id="refreshMine" class="secondary">Refresh records</button><div id="myAttendance" class="tablewrap muted" style="margin-top:14px">No records loaded.</div></section></div>
+</section>
+</main><footer>AttendX Cloud · Built for Aditya Palode’s portfolio · Never share passwords or secret API keys.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+const SUPABASE_URL = "https://lsnftzherkanyhskchvm.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_4On8NN_yfvuntKKye_eIWQ_zl9SDMJL";
+const $ = id => document.getElementById(id);
+const banner = $('banner');
+let sb, currentUser, currentProfile, rosterStudents = [];
+const esc = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function msg(text,type=''){banner.className='notice'+(type?' '+type:'');banner.textContent=text;}
+function errorText(e){return e?.message || String(e || 'Unknown error');}
+function fmtDate(d){return d ? new Date(d+'T00:00:00').toLocaleDateString() : '';}
+async function loadProfile(){
+ const {data,error}=await sb.from('profiles').select('id,full_name,role').eq('id',currentUser.id).single();
+ if(error) throw error; currentProfile=data;
+}
+function showSignedIn(){
+ $('authPanel').classList.add('hidden'); $('appPanel').classList.remove('hidden');
+ $('welcome').textContent=currentProfile.full_name || currentUser.email;
+ $('userEmail').textContent=currentUser.email; $('rolePill').textContent=currentProfile.role;
+ $('adminPanel').classList.toggle('hidden',currentProfile.role!=='admin');
+ $('teacherPanel').classList.toggle('hidden',currentProfile.role!=='teacher');
+ $('studentPanel').classList.toggle('hidden',currentProfile.role!=='student');
+ $('roleNotice').textContent = currentProfile.role==='admin' ? 'Admin access active. Add students, register subjects, and assign trusted teacher accounts.' : currentProfile.role==='teacher' ? 'Teacher access active. Only subjects assigned to your account are available.' : 'Student access active. Your profile must be linked to a student record by an administrator to view attendance.';
+ if(currentProfile.role==='admin') refreshAdmin();
+ if(currentProfile.role==='teacher') loadTeacherSubjects();
+ if(currentProfile.role==='student') loadMyAttendance();
+}
+async function refreshAdmin(){
+ await Promise.all([loadStudents(),loadSubjects(),loadAccounts()]);
+}
+async function loadStudents(){
+ const el=$('studentsTable'); el.textContent='Loading…';
+ const {data,error}=await sb.from('students').select('id,student_code,full_name,year,branch,user_id,created_at').order('student_code');
+ if(error){el.textContent=error.message;return;}
+ el.innerHTML=data.length?'<table><thead><tr><th>Roll No.</th><th>Name</th><th>Class</th><th>Branch</th><th>Linked account</th></tr></thead><tbody>'+data.map(s=>'<tr><td>'+esc(s.student_code)+'</td><td>'+esc(s.full_name)+'</td><td>'+esc(s.year)+'</td><td>'+esc(s.branch)+'</td><td>'+esc(s.user_id?'Linked':'Not linked')+'</td></tr>').join('')+'</tbody></table>':'No students added yet.';
+}
+async function loadAccounts(){
+ const el=$('accountsTable'), sel=$('teacherSelect'); el.textContent='Loading accounts…';
+ const {data,error}=await sb.from('profiles').select('id,full_name,role,created_at').order('created_at');
+ if(error){el.textContent=error.message;return;}
+ sel.innerHTML='<option value="">Choose a teacher account</option>'+data.filter(p=>p.role==='teacher').map(p=>'<option value="'+esc(p.id)+'">'+esc(p.full_name||p.id)+' · '+esc(p.id.slice(0,8))+'</option>').join('');
+ el.innerHTML=data.length?'<table><thead><tr><th>Name</th><th>Role</th><th>Account UUID</th></tr></thead><tbody>'+data.map(p=>'<tr><td>'+esc(p.full_name)+'</td><td>'+esc(p.role)+'</td><td><code>'+esc(p.id)+'</code></td></tr>').join('')+'</tbody></table>':'No accounts yet.';
+}
+async function loadSubjects(){
+ const el=$('subjectsTable'); const {data,error}=await sb.from('subjects').select('id,name,year,branch,teacher_id').order('name');
+ if(error){el.textContent=error.message;return;}
+ el.innerHTML=data.length?'<table><thead><tr><th>Subject</th><th>Class</th><th>Branch</th><th>Teacher UUID</th></tr></thead><tbody>'+data.map(s=>'<tr><td>'+esc(s.name)+'</td><td>'+esc(s.year)+'</td><td>'+esc(s.branch)+'</td><td>'+esc(s.teacher_id||'Unassigned')+'</td></tr>').join('')+'</tbody></table>':'No subjects yet.';
+}
+$('authForm').addEventListener('submit',async e=>{e.preventDefault();msg('Signing in…');try{
+ const email=$('email').value.trim(), password=$('password').value;
+ const {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;
+ currentUser=data.user;await loadProfile();showSignedIn();msg('Signed in successfully. Cloud data is loaded from Supabase.','ok');
+}catch(e){msg(errorText(e),'error');}});
+$('signupBtn').addEventListener('click',async()=>{msg('Creating account…');try{
+ const email=$('email').value.trim(),password=$('password').value,full_name=$('fullName').value.trim();
+ if(!email||password.length<8)throw new Error('Enter an email and a password with at least 8 characters.');
+ const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name}}});if(error)throw error;
+ if(data.session){currentUser=data.user;await loadProfile();showSignedIn();msg('Account created. You have Student role by default.','ok');}
+ else msg('Account created. Check your email to confirm it, then sign in. New accounts start as Student.','ok');
+}catch(e){msg(errorText(e),'error');}});
+$('logoutBtn').addEventListener('click',async()=>{await sb.auth.signOut();currentUser=null;currentProfile=null;$('appPanel').classList.add('hidden');$('authPanel').classList.remove('hidden');msg('Signed out.');});
+$('studentForm').addEventListener('submit',async e=>{e.preventDefault();try{const payload={student_code:$('studentCode').value.trim(),full_name:$('studentName').value.trim(),year:$('studentYear').value.trim(),branch:$('studentBranch').value.trim()};const {error}=await sb.from('students').insert(payload);if(error)throw error;e.target.reset();await loadStudents();msg('Student saved to cloud.','ok');}catch(e){msg(errorText(e),'error');}});
+$('subjectForm').addEventListener('submit',async e=>{e.preventDefault();try{const payload={name:$('subjectName').value.trim(),year:$('subjectYear').value.trim(),branch:$('subjectBranch').value.trim(),teacher_id:$('teacherSelect').value};const {error}=await sb.from('subjects').insert(payload);if(error)throw error;e.target.reset();await Promise.all([loadSubjects(),loadTeacherSubjects()]);msg('Subject saved and assigned.','ok');}catch(e){msg(errorText(e),'error');}});
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));['studentsTab','subjectsTab','accountsTab'].forEach(id=>$(id).classList.toggle('hidden',id!==b.dataset.tab));}));
+async function loadTeacherSubjects(){const {data,error}=await sb.from('subjects').select('id,name,year,branch').order('name');const sel=$('sessionSubject');if(error){sel.innerHTML='<option>'+esc(error.message)+'</option>';return;}sel.innerHTML='<option value="">Choose subject</option>'+data.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.name)+' · '+esc(s.year)+' '+esc(s.branch)+'</option>').join('');}
+$('sessionDate').value=new Date().toISOString().slice(0,10);
+$('sessionForm').addEventListener('submit',async e=>{e.preventDefault();try{
+ const subject_id=$('sessionSubject').value,attendance_date=$('sessionDate').value,slot=$('sessionSlot').value.trim();if(!subject_id)throw new Error('Choose a subject first.');
+ const {data:session,error}=await sb.from('attendance_sessions').upsert({subject_id,attendance_date,slot,created_by:currentUser.id},{onConflict:'subject_id,attendance_date,slot'}).select().single();if(error)throw error;
+ const {data,error:e2}=await sb.from('students').select('id,student_code,full_name,year,branch').order('student_code');if(e2)throw e2;
+ rosterStudents=data.filter(s=>{const opt=$('sessionSubject').selectedOptions[0].textContent;return (!s.year||opt.includes(s.year))&&(!s.branch||opt.toLowerCase().includes(s.branch.toLowerCase()));});
+ $('roster').dataset.sessionId=session.id;
+ $('roster').innerHTML=rosterStudents.length?rosterStudents.map(s=>'<label class="student-row"><span><strong>'+esc(s.student_code)+' · '+esc(s.full_name)+'</strong><br><span class="muted small">'+esc(s.year)+' '+esc(s.branch)+'</span></span><select data-student="'+esc(s.id)+'"><option value="present">Present</option><option value="absent">Absent</option><option value="leave">Leave</option><option value="medical">Medical</option><option value="od">On Duty</option></select></label>').join(''):'No matching students are registered for this class.';
+ $('saveAttendance').classList.toggle('hidden',!rosterStudents.length);msg('Class list loaded. Review each status, then save.','ok');
+}catch(e){msg(errorText(e),'error');}});
+$('saveAttendance').addEventListener('click',async()=>{try{const session_id=$('roster').dataset.sessionId;if(!session_id)throw new Error('Load a class list first.');const rows=[...$('roster').querySelectorAll('select[data-student]')].map(sel=>({session_id,student_id:sel.dataset.student,status:sel.value}));if(!rows.length)throw new Error('No students in roster.');const {error}=await sb.from('attendance_records').upsert(rows,{onConflict:'session_id,student_id'});if(error)throw error;msg('Attendance saved to cloud.','ok');}catch(e){msg(errorText(e),'error');}});
+async function loadMyAttendance(){const el=$('myAttendance');const {data:st,error:e1}=await sb.from('students').select('id,student_code').eq('user_id',currentUser.id).maybeSingle();if(e1){el.textContent=e1.message;return;}if(!st){el.textContent='Your student record is not linked yet. Ask the administrator to link your account.';return;}const {data,error}=await sb.from('attendance_records').select('status,created_at,student_id,attendance_sessions(attendance_date,slot,subject_id,subjects(name))').eq('student_id',st.id);if(error){el.textContent=error.message;return;}el.innerHTML=data.length?'<table><thead><tr><th>Date</th><th>Subject</th><th>Slot</th><th>Status</th></tr></thead><tbody>'+data.map(r=>'<tr><td>'+esc(r.attendance_sessions?.attendance_date||'')+'</td><td>'+esc(r.attendance_sessions?.subjects?.name||'')+'</td><td>'+esc(r.attendance_sessions?.slot||'')+'</td><td>'+esc(r.status)+'</td></tr>').join('')+'</tbody></table>':'No attendance records yet.';}
+$('refreshMine').addEventListener('click',loadMyAttendance);
+async function init(){if(!window.supabase){msg('Supabase SDK failed to load. Check internet connection.','error');return;}sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);const {data:{session}}=await sb.auth.getSession();if(session){try{currentUser=session.user;await loadProfile();showSignedIn();msg('Connected to AttendX Cloud.','ok');}catch(e){msg(errorText(e),'error');}}else msg('Supabase connected. Sign in or create an account.','ok');}
+init();
+})();
+</script>
+</body></html>
