@@ -48,7 +48,16 @@ const banner = $('banner');
 let sb, currentUser, currentProfile, rosterStudents = [];
 const esc = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function msg(text,type=''){banner.className='notice'+(type?' '+type:'');banner.textContent=text;}
-function errorText(e){return e?.message || String(e || 'Unknown error');}
+function errorText(e){
+ const raw=String(e?.message || e || 'Unknown error');
+ const low=raw.toLowerCase();
+ if(low.includes('email rate limit')||low.includes('rate limit')||low.includes('email rate exceeded')||low.includes('too many requests')) return 'Supabase email limit reached. Stop signup/reset attempts for now. Check Authentication → Users for your account. To reliably send emails, configure custom SMTP in Supabase Authentication settings; the built-in email service is rate-limited.';
+ if(low.includes('invalid login credentials')) return 'Sign-in failed. Check the exact email and password. If you just registered, confirm the email first. If confirmation/reset emails are rate-limited, do not keep retrying; check Authentication → Users in Supabase and wait or configure SMTP.';
+ if(low.includes('email not confirmed')) return 'Email is not confirmed yet. Check your inbox/spam for the confirmation message. Avoid repeatedly requesting new emails.';
+ if(low.includes('user already registered')) return 'This email already has an account. Use Sign in, or Reset password only after the email service limit clears.';
+ if(low.includes('redirect') && low.includes('allow')) return 'Supabase blocked the redirect URL. Add https://adityapalode1447.github.io/** to Authentication → URL Configuration → Redirect URLs.';
+ return raw;
+}
 function fmtDate(d){return d ? new Date(d+'T00:00:00').toLocaleDateString() : '';}
 async function loadProfile(){
  const {data,error}=await sb.from('profiles').select('id,full_name,role').eq('id',currentUser.id).single();
