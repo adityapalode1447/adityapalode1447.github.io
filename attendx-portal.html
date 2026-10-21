@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AttendX | Multi-Institute Attendance Portal</title>
+<meta name="description" content="AttendX multi-institute attendance portal for school admins, teachers and students.">
+<style>
+:root{color-scheme:dark;--bg:#070b14;--panel:#111a2b;--line:#2b3a53;--text:#edf5ff;--muted:#a7b6cc;--cyan:#5eead4;--violet:#a78bfa;--red:#fb7185;--green:#86efac}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% 0%,#172554 0,transparent 38%),radial-gradient(ellipse at 90% 20%,#312e81 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}a{color:var(--cyan)}header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px clamp(16px,4vw,48px);border-bottom:1px solid #ffffff18;background:#070b14cc;position:sticky;top:0;backdrop-filter:blur(14px);z-index:2}.brand{font-weight:900;letter-spacing:.09em;color:var(--text);text-decoration:none}.brand span{color:var(--cyan)}nav{display:flex;gap:18px;flex-wrap:wrap}nav a{font-size:13px;text-decoration:none;color:var(--muted)}main{width:min(1100px,calc(100% - 28px));margin:34px auto 70px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.22em;color:var(--cyan)}h1{font-size:clamp(38px,7vw,68px);line-height:1.02;margin:10px 0 14px;letter-spacing:-.04em}h1 span{color:var(--cyan)}h2{margin:0 0 8px}.muted{color:var(--muted)}.intro{max-width:700px}.portals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:28px 0}.portal{min-height:220px;border:1px solid var(--line);border-radius:20px;padding:22px;background:linear-gradient(145deg,#17243bdb,#0c1321f5);color:inherit;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;gap:20px;transition:.2s;cursor:pointer;text-align:left}.portal:hover,.portal[aria-pressed=true]{transform:translateY(-4px);border-color:var(--cyan);box-shadow:0 18px 45px #0005,0 0 0 1px #5eead433}.portal[aria-pressed=true]{background:linear-gradient(145deg,#143443,#171b35)}.ico{font-size:32px}.portal strong{font-size:22px;display:block}.portal small{color:var(--muted);font-size:13px}.panel{background:#111a2beF;border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,26px);box-shadow:0 20px 65px #0003;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.stack{display:grid;gap:12px}label{display:grid;gap:6px;font-size:13px;color:var(--muted)}input{width:100%;padding:12px 13px;border:1px solid #354660;border-radius:10px;background:#080f1d;color:var(--text);font:inherit}button,.btn{border:0;border-radius:10px;padding:11px 16px;background:linear-gradient(100deg,#5eead4,#a5f3fc);color:#07111b;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}button.secondary{background:#1b2940;color:var(--text);border:1px solid #354660}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.notice{border:1px solid #354660;background:#142238;color:var(--muted);padding:12px 14px;border-radius:12px;white-space:pre-wrap}.notice.error{border-color:#7f1d1d;background:#351923;color:#fecdd3}.notice.ok{border-color:#166534;background:#102b25;color:#bbf7d0}.hidden{display:none!important}.fine{font-size:12px;color:var(--muted)}footer{text-align:center;color:#8492a8;padding:26px;border-top:1px solid #ffffff18}@media(max-width:700px){.portals{grid-template-columns:1fr}.portal{min-height:150px}.grid{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="index.html">AP <span>/ ATTENDX</span></a><nav><a href="index.html">Portfolio</a><a href="projects.html">Projects</a><a href="attendance.html">Legacy app</a></nav></header>
+<main>
+<section class="intro"><div class="eyebrow">Multi-institute attendance workspace</div><h1>One portal.<br><span>Every classroom.</span></h1><p class="muted">Choose your secure portal. Each school or college must have its own institute membership and separately scoped records.</p></section>
+<div id="banner" class="notice" role="status">Choose a portal to continue.</div>
+<section class="portals" aria-label="Choose portal">
+<button class="portal" data-role="admin" aria-pressed="false"><span class="ico">🛡️</span><span><strong>Admin Portal</strong><small>Create an institute, manage access and open the legacy attendance workspace.</small></span><span>Continue →</span></button>
+<button class="portal" data-role="teacher" aria-pressed="false"><span class="ico">📚</span><span><strong>Teacher Portal</strong><small>Sign in to assigned classes, subjects and attendance tools.</small></span><span>Continue →</span></button>
+<button class="portal" data-role="student" aria-pressed="false"><span class="ico">🎓</span><span><strong>Student Portal</strong><small>Sign in to view your own attendance and reports.</small></span><span>Continue →</span></button>
+</section>
+<section id="authPanel" class="panel hidden">
+<div class="eyebrow" id="selectedRole">PORTAL LOGIN</div><h2 id="formTitle">Sign in to AttendX</h2><p class="muted" id="formHelp">Use the account assigned to your institute.</p>
+<form id="authForm" class="grid">
+<label>Full name <input id="fullName" autocomplete="name" placeholder="Your full name"></label>
+<label id="institutionWrap">School / College / Institute name <input id="institutionName" autocomplete="organization" placeholder="e.g. Example College"></label>
+<label>Email <input id="email" type="email" autocomplete="username" required></label>
+<label>Password <input id="password" type="password" autocomplete="current-password" minlength="8" required></label>
+<div class="row" style="grid-column:1/-1"><button type="submit">Sign in</button><button type="button" class="secondary" id="signupBtn">Create account</button><button type="button" class="secondary" id="resetBtn">Reset password</button></div>
+</form>
+<p class="fine">Security: public sign-up never grants teacher or student permissions. Staff/student access must be invited or assigned by an institute administrator. Passwords are handled by Supabase Auth, not stored in this page.</p>
+</section>
+<section id="signedPanel" class="panel hidden">
+<div class="eyebrow">Authenticated</div><h2 id="signedTitle">AttendX account</h2><p id="signedDetail" class="muted"></p>
+<div id="institutionCreate" class="hidden">
+<h2>Create your institute</h2><p class="muted">This creates an institute workspace linked to your verified Admin account.</p>
+<form id="institutionForm" class="stack"><label>Institute name<input id="newInstitutionName" required maxlength="120"></label><button type="submit">Create institute workspace</button></form>
+</div>
+<div id="workspace" class="hidden">
+<div class="notice ok" id="workspaceNotice"></div>
+<p class="muted">Your current account is authenticated. The legacy app still has its own local login/data store until its cloud migration is completed and tested.</p>
+<div class="row"><a class="btn" href="attendance.html">Open Legacy Attendance App ↗</a><button class="secondary" id="signoutBtn">Sign out</button></div>
+</div>
+</section>
+</main>
+<footer>AttendX · Multi-institute portal prototype · Secure roles require database policies, not just a hidden UI.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+const URL="https://lsnftzherkanyhskchvm.supabase.co";
+const KEY="sb_publishable_4On8NN_yfvuntKKye_eIWQ_zl9SDMJL";
+const $=id=>document.getElementById(id);
+let sb=null, role=null, user=null, profile=null;
+function message(t,type=""){const b=$("banner");b.className="notice"+(type?" "+type:"");b.textContent=t;}
+function err(e){const m=String(e?.message||e||"Unknown error");if(/invalid login credentials/i.test(m))return"Email or password is incorrect. If you just signed up, confirm your email first.";if(/email not confirmed/i.test(m))return"Confirm your email from your inbox before signing in.";if(/rate limit|email rate exceeded/i.test(m))return"Supabase email sending limit reached. Stop retrying and check Supabase Authentication settings.";return m;}
+function choose(r){role=r;$("authPanel").classList.remove("hidden");$("signedPanel").classList.add("hidden");document.querySelectorAll("[data-role]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.role===r)));$("selectedRole").textContent=r.toUpperCase()+" PORTAL";$("formTitle").textContent=(r==="admin"?"Admin":r==="teacher"?"Teacher":"Student")+" sign in";$("formHelp").textContent=r==="admin"?"Create your Admin account and institute workspace, or sign in to your existing institute.":r==="teacher"?"Sign in with the teacher account assigned by your institute Admin.":"Sign in with the student account assigned by your institute Admin.";$("fullName").classList.toggle("hidden",r!=="admin");$("institutionWrap").classList.toggle("hidden",r!=="admin");$("signupBtn").classList.toggle("hidden",r!=="admin");message("Selected "+r+" portal.");}
+document.querySelectorAll("[data-role]").forEach(b=>b.addEventListener("click",()=>choose(b.dataset.role)));
+async function profileLoad(){const {data,error}=await sb.from("profiles").select("id,full_name,role").eq("id",user.id).single();if(error)throw error;profile=data;}
+async function refreshSession(){if(!sb)return;const {data}=await sb.auth.getSession();if(!data.session)return;user=data.session.user;try{await profileLoad();showSigned();}catch(e){message("Signed in, but profile setup is incomplete: "+err(e),"error");}}
+function showSigned(){ $("authPanel").classList.add("hidden");$("signedPanel").classList.remove("hidden");$("signedTitle").textContent=profile?.full_name||user.email||"AttendX account";$("signedDetail").textContent="Signed in as "+user.email+" · Database role: "+(profile?.role||"unassigned");const admin=role==="admin"&&profile?.role==="admin";$("institutionCreate").classList.toggle("hidden",!admin);$("workspace").classList.toggle("hidden",!admin);if(admin){$("workspaceNotice").textContent="Admin identity verified. Institute workspace is ready to configure.";$("newInstitutionName").value=user.user_metadata?.institution_name||$("institutionName").value.trim();}}
+$("authForm").addEventListener("submit",async e=>{e.preventDefault();if(!sb){message("Supabase client is unavailable. Check your internet connection.","error");return;}message("Signing in…");try{const {data,error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)throw error;user=data.user;await profileLoad();if(profile.role!==role){await sb.auth.signOut();throw new Error("This account is not assigned the "+role+" role. Ask your institute Admin to assign the correct access.");}showSigned();message("Signed in successfully.","ok");}catch(e){message(err(e),"error");}});
+$("signupBtn").addEventListener("click",async()=>{try{const full_name=$("fullName").value.trim(),institution_name=$("institutionName").value.trim(),email=$("email").value.trim(),password=$("password").value;if(!full_name||!institution_name||!email||password.length<8)throw new Error("Enter your name, institute name, email and a password of at least 8 characters.");message("Creating Admin account…");const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name,institution_name,requested_role:"admin"}}});if(error)throw error;if(data.session){user=data.user;await profileLoad();if(profile.role!=="admin")throw new Error("Account created safely, but it has not been promoted to Admin. Apply the secure database setup before creating institute workspaces.");showSigned();message("Admin account created.","ok");}else message("Signup request submitted. Confirm the email, then sign in. Admin privileges and institute creation require the multi-institute SQL setup to be applied first.","ok");}catch(e){message(err(e),"error");}});
+$("resetBtn").addEventListener("click",async()=>{try{const email=$("email").value.trim();if(!email)throw new Error("Enter your email first.");const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)throw error;message("Password reset email requested. Check inbox/spam.","ok");}catch(e){message(err(e),"error");}});
+$("institutionForm").addEventListener("submit",async e=>{e.preventDefault();try{const name=$("newInstitutionName").value.trim();if(!name)throw new Error("Enter the institute name.");const {data,error}=await sb.rpc("attendx_create_institution",{p_name:name});if(error)throw error;message("Institute workspace created. ID: "+data,"ok");$("workspaceNotice").textContent="Institute workspace created · ID "+data+" · Keep this ID for future setup."; }catch(e){message("Institute creation is not enabled yet. Apply attendx-multitenant-schema.sql in Supabase SQL Editor first. Details: "+err(e),"error");}});
+$("signoutBtn").addEventListener("click",async()=>{await sb.auth.signOut();user=null;profile=null;$("signedPanel").classList.add("hidden");$("authPanel").classList.add("hidden");document.querySelectorAll("[data-role]").forEach(b=>b.setAttribute("aria-pressed","false"));role=null;message("Signed out. Choose a portal.");});
+try{if(window.supabase?.createClient){sb=window.supabase.createClient(URL,KEY);message("Connected to Supabase. Choose a portal.","ok");refreshSession();}else message("Supabase library failed to load. Check your connection and refresh.","error");}catch(e){message(err(e),"error");}
+})();
+</script>
+</body>
+</html>
