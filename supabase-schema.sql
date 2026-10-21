@@ -144,7 +144,7 @@ for select to authenticated
 using (
   public.attendx_is_admin()
   or teacher_id = (select auth.uid())
-  or exists (select 1 from public.students st where st.user_id = (select auth.uid()) and (year = '' or year = st.year) and (branch = '' or lower(branch) = lower(st.branch)))
+  or exists (select 1 from public.students st where st.user_id = (select auth.uid()) and (subjects.year = '' or subjects.year = st.year) and (subjects.branch = '' or lower(subjects.branch) = lower(st.branch)))
 );
 
 drop policy if exists "subjects_admin_manage" on public.subjects;
@@ -162,7 +162,7 @@ using (
   or exists (
     select 1 from public.attendance_records ar
     join public.students st on st.id = ar.student_id
-    where ar.session_id = id and st.user_id = (select auth.uid())
+    where ar.session_id = attendance_sessions.id and st.user_id = (select auth.uid())
   )
 );
 
